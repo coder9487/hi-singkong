@@ -1,25 +1,29 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
-      <router-view></router-view>
+      <transition
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+        appear
+        :duration="300"
+      >
+        <router-view />
+      </transition>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref } from "vue";
 export default {
-  name: 'LayoutDefault',
+  name: "LayoutDefault",
 
-  components: {
-   
-  },
+  components: {},
 
-  setup () {
+  setup() {
     return {
-      leftDrawerOpen: ref(false)
-    }
-  }
-}
+      leftDrawerOpen: ref(false),
+    };
+  },
+};
 </script>
-

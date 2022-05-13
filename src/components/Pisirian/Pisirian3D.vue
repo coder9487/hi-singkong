@@ -1,5 +1,5 @@
 <template>
-  <div id="FullScreen_Pisirian">
+  <div v-touch-pan.prevent="direciton" id="FullScreen_Pisirian">
     <canvas id="three"></canvas>
   </div>
 </template>
@@ -68,18 +68,18 @@ export default {
     testlog() {
       // console.log("Test log");
     },
-    //     direciton({  ...newInfo }) {
-    //       this.direc.hori = newInfo.delta.x.toFixed(0);
-    //       this.direc.vert = newInfo.delta.y.toFixed(0);
-    //       // console.log(this.direc);
-    //  if (newInfo.isFinal) {
-    //         this.direc.hori = 0;
-    //         this.direc.vert = 0;
-    //       }
-    //     },
-    direciton(val) {
-      console.log(val);
+    direciton({ ...newInfo }) {
+      this.direc.hori = newInfo.delta.x.toFixed(0);
+      this.direc.vert = newInfo.delta.y.toFixed(0);
+      this.direc.hori = Math.min(Math.max(parseInt(this.direc.hori), -5), 5)*3;
+      this.direc.vert = Math.min(Math.max(parseInt(this.direc.vert), -5), 5)*3;
+      // console.log(this.direc);
+      if (newInfo.isFinal) {
+        this.direc.hori = 0;
+        this.direc.vert = 0;
+      }
     },
+
     loading_callbacks(val) {
       // console.log("Pass into callbacks ", (val.loaded / 65211482).toFixed(2));
       this.$emit("loadingProgress", (val.loaded / 65211482).toFixed(2));
@@ -346,7 +346,7 @@ export default {
             z: -1.871433,
             onComplete: () => {
               gsap.to(this.camera.quaternion, {
-                duration: 0.9,
+                duration: 1.5,
                 w: 0.7067715186504848,
                 x: 0.07662949140912478,
                 y: 0.6991818787607907,
