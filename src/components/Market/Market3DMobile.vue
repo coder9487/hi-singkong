@@ -1,8 +1,9 @@
 <template>
-  <div  v-touch="direciton" id="FullScreen">
+  <div v-touch-pan.prevent="direciton" id="FullScreen">
     <canvas id="three"></canvas>
   </div>
 </template>
+
 <script>
 
 import * as THREE from "three";
@@ -123,8 +124,8 @@ export default {
     },
 
     loading_callbacks(val) {
-      console.log("Pass into callbacks ", (val.loaded / 166225800).toFixed(2));
-      this.$emit("loadingProgress", (val.loaded / 166225800).toFixed(2));
+      console.log("Pass into callbacks ", (val.loaded / 98073222).toFixed(2));
+      this.$emit("loadingProgress", (val.loaded / 98073222).toFixed(2));
     },
     Init_Three() {
       this.raycaster = new THREE.Raycaster();

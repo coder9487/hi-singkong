@@ -22,7 +22,7 @@ export class FirstPersonCameraControl {
     this.applyCollision = true;
     this.positionEasing = true;
     this.lookflag = 1;
-    this.lookSpeed = 0.008;
+    this.lookSpeed = 0.001;
     this.moveSpeed = 0.15; ///改速度
     this.playerHeight = 1.4;
     this.g = 9.8;
@@ -98,6 +98,7 @@ export class FirstPersonCameraControl {
     // euler旋转顺序 y z x
     // euler.x~y轴旋转
     // euler.y~z轴旋转
+    movementY /= 3;
     this._euler.y -= movementX * this.lookSpeed;
     this._euler.x -= movementY * this.lookflag * this.lookSpeed;
     this.camera.quaternion.setFromEuler(this._euler);
@@ -256,6 +257,8 @@ export class FirstPersonCameraControl {
    */
   update() {
     //gravity test
+    if(!this._isEnabled)
+    return;
     this.gravityTest();
     //collision test
     this.collisionTest();

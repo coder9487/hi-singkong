@@ -54,7 +54,7 @@ import Market3DMobileVue from "../components/Market/Market3DMobile.vue";
 import gsap from "gsap";
 
 export default defineComponent({
-  name: "DiningTable",
+  name: "Market",
   components: {
     Market3D,
     Market2D,
@@ -72,6 +72,7 @@ export default defineComponent({
     };
   },
   mounted() {
+    this.market3dObject = document.getElementById('')
     let vid = document.getElementById("loading-video");
     // let photo = document.getElementById("loadingPage-mask");
     let image = document.getElementById("loadingPage-mask");
@@ -88,9 +89,8 @@ export default defineComponent({
     lightBoxEffectMode: function () {
       switch (this.lightBoxEffectMode) {
         case true:
-          gsap.fromTo(
-            "#Market3D-tag",
-            { webkitFilter: "brightness(1) blur(0px)", filter: "brightness(1) blur(0px)" },
+          gsap.to(
+            "#three",
             {
               webkitFilter: "brightness(0.6) blur(4px)",
               filter: "brightness(0.6) blur(4px)",
@@ -99,9 +99,8 @@ export default defineComponent({
           );
           break;
         case false:
-          gsap.fromTo(
-            "#Market3D-tag",
-            { webkitFilter: "brightness(0.6) blur(4px)", filter: "brightness(0.6) blur(4px)" },
+          gsap.to(
+            "#three",
             {
               webkitFilter: "brightness(1) blur(0px)",
               filter: "brightness(1) blur(0px)",
@@ -118,7 +117,7 @@ export default defineComponent({
         loadingWave.style.bottom = this.loading * 0.3 - 70 + "%";
       else loadingWave.style.bottom = this.loading * 0.3 + "%";
       if (
-        this.loading >= 50 &&
+        this.loading >= 98 &&
         ((this.ENABLE_FOR_MOBILE && this.IS_MOBILE) || !this.IS_MOBILE) &&
         !this.DEV_FOR_LOADING
       ) {
