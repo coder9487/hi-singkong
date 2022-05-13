@@ -1,64 +1,29 @@
-<template>
-
-  <div>
-    <div>ScreenOrientation:{{ ScreenOrientation }}</div>
-
-    <div id="alpha"></div>
-    <div id="beta"></div>
-    <div id="gamma"></div>
-  </div>
-  <VueTouch :pan="touchHandler" id="touch">1</VueTouch>
-  <!-- <span @touchmove="touchHandler">Tap Me</span> -->
-</template>
 <script>
-import { reactive } from "vue";
-
+import gsap from 'gsap'
 
 export default {
-  setup() {},
   data() {
     return {
-      ScreenOrientation: reactive({}),
-      DeviceOrientation: {},
-    };
+      number: 0,
+      tweened: 0
+    }
   },
-  mounted() {
-    window.addEventListener(
-      "orientationchange",
-      this.onScreenOrientationChangeEvent,
-      false
-    );
-
-    window.addEventListener(
-      "deviceorientation",
-      this.onDeviceOrientationChangeEvent,
-      false
-    );
-  },
-  methods: {
-    touchHandler(direction) {
-      console.log(" in direction ", direction);
-      // direction.touches[0].
-    },
-    onScreenOrientationChangeEvent(event) {
-      this.ScreenOrientation = event;
-      console.log("ScreenOrientation", event);
-    },
-    onDeviceOrientationChangeEvent(event) {
-      this.DeviceOrientation = event;
-      console.log("DeviceOrientation", event);
-    },
-  },
-};
+  watch: {
+    number(n) {
+      gsap.to(this, { duration: 2, tweened: Number(n) || 0 })
+    }
+  }
+}
 </script>
-<style lang="scss" scoped>
-#touch {
-  -webkit-backface-visibility: hidden;
-  width: 500px;
-  height: 500px;
-  background-color: aquamarine;
-  position: fixed;
-  top: 20vh;
-  left: 30vw;
+
+<template>
+	Type a number: <input v-model.number="number" />
+	<p class="big-number">{{ tweened.toFixed(0) }}</p>
+</template>
+
+<style>
+.big-number {
+  font-weight: bold;
+  font-size: 2em;
 }
 </style>

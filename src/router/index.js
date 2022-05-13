@@ -13,6 +13,11 @@ const routes = [
     component: () => import( '../views/Market.vue')
   },
   {
+    path: '/MarketVR',
+    name: 'MarketVR',
+    component: () => import( '../views/MarketVR.vue')
+  },
+  {
     path: '/Swordfish',
     name: 'Swordfish',
     component: () => import( '../views/Swordfish.vue')

@@ -106,8 +106,14 @@
         src="../../../public/images/swordfish/fail.png"
       />
       <div v-if="getMountofSwordfish > 0" class="hearvest-content-money">
-        {{ getMoney }}
+        {{ tweened.toFixed(0) }}
       </div>
+      <img
+        v-if="getMountofSwordfish > 0"
+        src="../../../public/images/swordfish/good.png"
+        class="hearvest-content-icon"
+        id="good-icon"
+      />
       <div v-if="getMountofSwordfish > 0" class="hearvest-content-voluem">
         {{ hearvest }}
       </div>
@@ -128,7 +134,11 @@
         : false
     "
   >
-    <img id="hitButton" src="../../../public/images/shoot.png" v-if="IS_MOBILE" />
+    <img
+      id="hitButton"
+      src="../../../public/images/shoot.png"
+      v-if="IS_MOBILE"
+    />
   </div>
 
   <div id="hintOfHit">恭喜!你鏢中了!</div>
@@ -154,14 +164,9 @@ export default {
     getMountofSwordfish() {
       return this.$store.state.Swordfish.swordfish;
     },
-    getMoney() {
-      return (
-        this.hearvest * Math.floor(Math.random() * (120000 - 80000) + 80000)
-      ).toFixed(0);
-    },
   },
   mounted() {
-    this.$store.commit("Swordfish/Reset")
+    this.$store.commit("Swordfish/Reset");
     if (this.IS_MOBILE) {
       const btn = document.getElementById("hitButton");
       btn.addEventListener("touchstart", (e) => {
@@ -179,12 +184,14 @@ export default {
     }
   },
   watch: {
+    number(n) {
+      gsap.to(this, { duration: 2, tweened: Number(n) || 0 });
+    },
     getMountofSwordfish: function () {
       console.log("getMountofSwordfish", this.getMountofSwordfish);
       if (this.dialogContent_Index == 4)
         this.$store.commit("Swordfish/clearResult");
-      if(this.getMountofSwordfish > 0)
-      this.showHitHint();
+      if (this.getMountofSwordfish > 0) this.showHitHint();
     },
     dialogContent_Index: function () {
       if (this.dialogContent_Index == 4) {
@@ -233,7 +240,8 @@ export default {
         videoObj.style.zIndex = "200";
         videoObj.play();
         videoObj.onended = () => {
-          this.$store.commit("setFozzyFram", false);
+          // this.$store.commit("setFozzyFram", false);
+          
           this.dialogContent_Index++;
           if (this.hearvest >= 1)
             gsap.to("#FinishVideo_win", {
@@ -254,18 +262,31 @@ export default {
           }
         };
       }
+      if (this.dialogContent_Index == 8) {
+        this.getMoney();
+        setTimeout(() => {
+          let tw = gsap.timeline();
+          tw.to("#good-icon", { duration: 0.1, opacity: 1 }).to("#good-icon", {
+            duration: 0.1,
+            scale: 0.7,
+          });
+        }, 2000);
+      }
       if (this.dialogContent_Index == 9) {
         if (this.getMountofSwordfish == 0) {
           this.dialogContent_Index = 10;
         }
       }
       if (this.dialogContent_Index == 11) {
+         this.$store.commit("setFozzyFram", false);
         this.$router.push("/diningTable");
       }
     },
   },
   data() {
     return {
+      tweened: 0,
+      number: 0,
       mount_of_swordfish: 0,
       hearvest: 0,
       showVideo: ref(false),
@@ -283,7 +304,6 @@ export default {
         "hearvest",
         '哇!不愧是我的孫子，阿公送你一張<b style="color: #FEA30B;">成功折價卷</b>，等體驗結束後記得到櫃檯領取喔!',
         '辛苦後的結晶總是特別香甜，阿公帶你去吃一頓「<b style="color: #FEA30B;">成功大餐</b>」，都是成功道地料理喔!',
-
       ],
       dialogButton_Content: [
         "這~麼厲害",
@@ -297,11 +317,15 @@ export default {
         "哇!好棒",
         "這~麼厲害",
         "想吃!走吧!",
-
       ],
     };
   },
   methods: {
+    getMoney() {
+      this.number = (
+        this.hearvest * Math.floor(Math.random() * (120000 - 80000) + 80000)
+      ).toFixed(0);
+    },
     Hit() {
       this.$store.commit("Swordfish/Hit");
     },
@@ -324,9 +348,10 @@ export default {
     imagesrc(index) {
       let array = ["cupon.jpg", "table.png"];
 
-      if(index == 0)
-      {
-       return  `../../images/swordfish/cupon${Math.floor(Math.random()*3)}.jpg`
+      if (index == 0) {
+        return `../../images/swordfish/cupon${Math.floor(
+          Math.random() * 3
+        )}.jpg`;
       }
       return `../../images/swordfish/${array[index]}`;
     },
@@ -379,7 +404,14 @@ $content-text-size-pc: 1.4vw;
     height: auto;
 
     // border-radius: 30px;
-
+    &-icon {
+      width: 10vw;
+      opacity: 0;
+      position: absolute;
+      margin-top: -2%;
+      right: 1%;
+      transform: scale(2);
+    }
     &-image {
       top: 15vh;
       width: 50vw;
@@ -546,7 +578,6 @@ $content-text-size-pc: 1.4vw;
     padding: 10px;
   }
 }
-
 
 * {
   -webkit-user-drag: none;

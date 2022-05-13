@@ -2,6 +2,7 @@
   <div>
     <canvas id="three"></canvas>
   </div>
+  <img v-if="0" id="pin" src="../../../public/images/pin.png"/>
 </template>
 <script>
 import * as THREE from "three";
@@ -17,7 +18,6 @@ import {
   FishMonger,
   AnimateObject,
   HoverCharacter,
-
 } from "../../Library/AnimationLibrary";
 
 export default {
@@ -126,19 +126,26 @@ export default {
     },
 
     loading_callbacks(val) {
-      console.log("Pass into callbacks ", (val.loaded / 166225800).toFixed(2));
-      this.$emit("loadingProgress", (val.loaded / 166225800).toFixed(2));
+      console.log("Pass into callbacks ", (val.loaded / 98073222).toFixed(2));
+      this.$emit("loadingProgress", (val.loaded / 98073222).toFixed(2));
     },
     Init_Three() {
+
+      this.pin2d = document.getElementById('pin')
+
+
+
+
+
+
       this.gsapTimeline = gsap.timeline();
       this.raycaster = new THREE.Raycaster();
       this.raycaster.far = 10;
       this.pointer = new THREE.Vector2();
-
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color("#ffffff");
       let canvas = document.querySelector("#three");
-
+      this.createNullObject();
       this.renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: true,
@@ -223,7 +230,6 @@ export default {
       }
     },
     RemoveEventListener() {
-
       if (!this.detectPaltform()) {
         this.Window.addEventListener("pointermove", this.onPointerMove);
         this.Window.addEventListener("resize", this.onWindowResize);
@@ -260,6 +266,13 @@ export default {
       window.scene = this.scene;
 
       //  console.log(this.scene.background.texture.minFilter = THREE.LinearFilter)
+    },
+    createNullObject() {
+      const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+      const material = new THREE.MeshBasicMaterial({});
+      this.cube = new THREE.Mesh(geometry, material);
+      this.cube.visible = false;
+      this.scene.add(this.cube);
     },
     createSound() {
       const listener = new THREE.AudioListener();
@@ -339,6 +352,8 @@ export default {
     onPointerMove(event) {
       this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
       this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      // this.pin2d.style.left = event.clientX+'px';
+      // this.pin2d.style.top = event.clientY+'px';
     },
     onWindowResize() {
       this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -441,7 +456,7 @@ export default {
       const texture = new THREE.TextureLoader().load("../images/pin.png");
 
       // immediately use the texture for material creation
-      const material = new THREE.MeshBasicMaterial({
+      const material = new THREE.MeshStandardMaterial({
         map: texture,
         side: THREE.DoubleSide,
         transparent: true,
@@ -648,8 +663,16 @@ export default {
         this.akonList[1].toggleDistance
       ) {
         this.dbClickEvent.eventName = "";
-        // this.walkingGsap.pause();
-        // console.log(this.camera.quaternion);
+          this.cube.position.set(
+            this.camera.position.x,
+            this.camera.position.y,
+            this.camera.position.z
+          );
+          this.cube.lookAt(-44.4, 1.65, -4.12);
+          let startOrientation = new THREE.Quaternion();
+
+          startOrientation = this.cube.quaternion.clone();
+
         this.akonList[1].toggleDistance = 1000;
         this.controls.enabled = false;
         this.gsapTimeline
@@ -659,11 +682,11 @@ export default {
             z: -3.85,
           })
           .to(this.camera.quaternion, {
-            duration: 0.5,
-            x: -0.025688131840607836,
-            y: 0.7657777937572651,
-            z: 0.03064745880541916,
-            w: 0.641860751050853,
+            duration: 2,
+            x: startOrientation.x,
+            y: -startOrientation.y,
+            z: startOrientation.z,
+            w: startOrientation.w,
             onComplete: () => {
               this.PlayerState = 3;
               if (this.$store.state.Market.tutorialIndex == 4)
@@ -677,29 +700,40 @@ export default {
         if (this.KickMan.DoOnce == true) {
           this.dbClickEvent.eventName = "";
           this.KickMan.DoOnce = false;
+
           this.controls.enabled = false;
           this.RemoveEventListener();
+          this.cube.position.set(
+            this.camera.position.x,
+            this.camera.position.y,
+            this.camera.position.z
+          );
+          this.cube.lookAt(-9.492, 1.5, -3.408);
+          let startOrientation = new THREE.Quaternion();
 
+          startOrientation = this.cube.quaternion.clone();
           this.gsapTimeline
+            .to(this.camera.quaternion, {
+              duration: 2,
+              
+              x: startOrientation.x,
+              y: -startOrientation.y,
+              z: startOrientation.z,
+              w: startOrientation.w,
+            })
             .to(this.camera.position, {
               duration: 1,
               repeat: 0,
-              x: 6.241002770590721,
-              y: 1.5,
-              z: -2.8831586237151945,
-            })
-            .to(this.camera.rotation, {
-              duration: 1,
-              repeat: 0,
-              y: Math.PI / 2,
+              x: 6.241,
+              z: -2.883,
               onComplete: () => {
                 this.KickMan.PlayAnimation();
-                this.controls.enabled = true;
-                this.AddEventListener();
+                setTimeout(() => {
+                  this.controls.enabled = true;
+                  this.AddEventListener();
+                }, 2000);
               },
             });
-
-          // setTimeout(, 2500);
         }
       }
 
@@ -726,17 +760,13 @@ export default {
               z: -0.028502417966723204,
               onComplete: () => {
                 this.SwordFish.PlayAnimation();
-                this.controls.enabled = true;
-                this.AddEventListener()
+                setTimeout(() => {
+                  this.controls.enabled = true;
+                  this.AddEventListener();
+                }, 2000);
               },
             });
 
-          // this.controls._euler = new THREE.Euler().setFromQuaternion(
-          //   this.camera.quaternion,
-          //   "XYZ"
-          // );
-          // console.log(camera.position);
-          // setTimeout(, 1900);
         }
       }
 
@@ -821,8 +851,16 @@ export default {
   width: 100%;
   height: 100%;
   position: fixed;
-  z-index: 6;
+  z-index: 0;
   left: 0;
   top: 0;
+}
+
+#pin{
+  width: 10vw;
+  height: auto;
+  position: absolute;
+  z-index: 10;
+  top:10vh;
 }
 </style>

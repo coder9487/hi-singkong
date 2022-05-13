@@ -80,10 +80,10 @@ export default defineComponent({
         case true:
           gsap.fromTo(
             "#DiningTable3D-tag",
-            { webkitFilter: "brightness(1)", filter: "brightness(1)" },
+            { webkitFilter: "brightness(1) blur(0px)", filter: "brightness(1) blur(0px)" },
             {
-              webkitFilter: "brightness(0.6)",
-              filter: "brightness(0.6)",
+              webkitFilter: "brightness(0.6) blur(4px)",
+              filter: "brightness(0.6) blur(4px)",
               duration: 1,
             }
           );
@@ -91,10 +91,10 @@ export default defineComponent({
         case false:
           gsap.fromTo(
             "#DiningTable3D-tag",
-            { webkitFilter: "brightness(0.6)", filter: "brightness(0.6)" },
+            { webkitFilter: "brightness(0.6) blur(4px)", filter: "brightness(0.6) blur(4px)" },
             {
-              webkitFilter: "brightness(1)",
-              filter: "brightness(1)",
+              webkitFilter: "brightness(1) blur(0px)",
+              filter: "brightness(1) blur(0px)",
               duration: 1,
             }
           );

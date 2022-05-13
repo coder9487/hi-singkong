@@ -1,4 +1,3 @@
-/* eslint-disable */
 <template>
   <div v-show="missionContentIndex < missionContent.length" class="mission">
     <div class="text">{{ missionContent[missionContentIndex] }}</div>
@@ -47,24 +46,53 @@
       navigate_dialog_content_index <= 10
     "
   >
-    <div>
+    <!-- 
+      <div>
       <img class="fishmonger-monger" :src="fishMonger_image_path.fishMonger" />
+    </div> 
+    -->
+    <div v-for="i in 4" :key="i">
+      <img
+        class="fishmonger-monger"
+        :src="`../../images/monger${i}/monger${i}.png`"
+        v-show="i == fishmonger_sequence"
+      />
     </div>
 
     <div
       class="fishmonger-dialog"
       v-show="fishmonger_dialog_content_show_available"
     >
+      <!-- 
+        <img
+        :src="fishMonger_image_path.dialogBox"
+        class="fishmonger-dialog-photo"
+      />
+       -->
 
-
-      <img :src="fishMonger_image_path.dialogBox" class="fishmonger-dialog-photo"/>
+      <div v-for="i in 4" :key="i">
+        <div
+          v-for="j in fishmonger_dialog_content_index_limit[i]"
+          :key="`monger${j}`"
+        >
+          <img
+            class="fishmonger-dialog-photo"
+            :src="`../../images/monger${i}/${i}-${j}.png`"
+            v-show="
+              fishmonger_sequence == i && fishmonger_dialog_content_index == j
+            "
+          />
+        </div>
+      </div>
       <div class="fishmonger-dialog-button-group">
         <div
           class="fishmonger-dialog-button button color-orange"
           id="escapeIntroduceBox"
           @click="FishMonger_handler('next')"
-          v-if="fishmonger_dialog_content_index ==
-          fishmonger_dialog_content_index_limit[fishmonger_sequence]-1"
+          v-if="
+            fishmonger_dialog_content_index ==
+            fishmonger_dialog_content_index_limit[fishmonger_sequence] - 1
+          "
         >
           繼續說
         </div>
@@ -76,9 +104,6 @@
           了解，謝謝
         </div>
       </div>
-
-
-
     </div>
   </div>
 </template>
@@ -133,7 +158,6 @@ export default {
     let IS_MOBILE = ref(
       /Android|webOS|iPhone|iPad|iPod/i.test(navigator.userAgent)
     );
-
 
     let NextTutorial = ref(false);
     let lottieAnimation;
@@ -200,7 +224,7 @@ export default {
           this.missionContentIndex++;
           break;
         case 4:
-          this.missionContentIndex++; 
+          this.missionContentIndex++;
         case 1:
         case 2:
         case 5:
@@ -252,14 +276,16 @@ export default {
       return this.$store.state.Market.tutorialIndex;
     },
     lottiePath: function () {
-      let returnStr=""
+      let returnStr = "";
       if (!this.IS_MOBILE)
-        returnStr =  `../../lottie/${this.lottie_conetnt[this.lottie_counter]}.json`;
+        returnStr = `../../lottie/${
+          this.lottie_conetnt[this.lottie_counter]
+        }.json`;
       else
-        returnStr =  `../../lottie/${
+        returnStr = `../../lottie/${
           this.lottie_mobile_conetnt[this.lottie_counter]
         }.json`;
-        return returnStr;
+      return returnStr;
     },
     fuzzyavailable() {
       return this.fishmonger_dialog_content_show_available;
@@ -289,8 +315,7 @@ export default {
       this.direc.hori = newInfo.delta.x.toFixed(0);
       this.direc.vert = newInfo.delta.y.toFixed(0);
 
-       if(newInfo.isFinal) 
-       {
+      if (newInfo.isFinal) {
         this.direc.hori = 0;
         this.direc.vert = 0;
       }
@@ -308,10 +333,7 @@ export default {
           return true;
         else return false;
       } else {
-        if (
-          passIn == this.lottie_counter &&
-          this.lottieShowEnable == true
-        )
+        if (passIn == this.lottie_counter && this.lottieShowEnable == true)
           return true;
         else return false;
       }
@@ -321,7 +343,7 @@ export default {
       if (this.navigate_dialog_content_index == 10) {
         this.$store.commit("Market/distoryScene");
 
-        this.$router.push("/Swordfish");
+        this.$router.replace("/Swordfish");
       }
 
       console.log(this.navigate_dialog_content_index);
@@ -407,7 +429,6 @@ export default {
 };
 </script>
 <style lang="scss">
-
 $content-text-size-pc: 1.4vw;
 .controlPannel {
   // // background-color: antiquewhite;
@@ -446,9 +467,8 @@ $content-text-size-pc: 1.4vw;
     align-content: center;
     align-items: center;
     justify-content: center;
-        @media screen and (min-width: 1024px) {
-    transform: scale(1.4);
-
+    @media screen and (min-width: 1024px) {
+      transform: scale(1.4);
     }
   }
 }
@@ -463,8 +483,6 @@ $content-text-size-pc: 1.4vw;
     background-color: aliceblue;
     display: flex;
     justify-content: space-around;
-
-
 
     &-content {
       font-size: 5vh;
@@ -523,25 +541,25 @@ $content-text-size-pc: 1.4vw;
     position: absolute;
     right: 30vw;
     // background-color: aquamarine;
-    top: 10vh;
-    left:10vw;
+    top: 20vw;
+    left: 10vw;
 
     @media screen and (min-width: 1024px) {
       top: 10vh;
       max-width: 60vw;
-      left:15vw;
+      left: 15vw;
     }
 
-    &-photo{
+    &-photo {
       width: 70vw;
-      
+
       height: auto;
     }
     &-button-group {
       // background-color: cornflowerblue;
       display: flex;
       top: -20px;
-       justify-content: space-between;
+      justify-content: space-between;
       // transform: translateX(-50%);
       width: 50vw;
       position: relative;

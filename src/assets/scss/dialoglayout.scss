@@ -5,7 +5,7 @@ $content-text-size-pc: 1.4vw;
   opacity: 1;
   position: absolute;
   width: 50vw;
-  left: 22.5vw;
+  left: 25vw;
   /*height: 20vh;*/
   height: 5vw;
   /*left: 20vw;*/
@@ -51,7 +51,7 @@ $content-text-size-pc: 1.4vw;
   &-group {
     position: relative;
     height: 10vh;
-    transform: translateX(2.5vw);
+    // transform: translateX(2.5vw);
     top: -3vw;
     display: flex;
     align-items: center;
@@ -75,7 +75,7 @@ b {
 
   @media screen and (min-width: 1024px) {
     width: 9vw;
-    height: 3vh;
+    height: 7vh;
 
     border-radius: 20px;
   }
@@ -157,8 +157,8 @@ b {
   &-dialog {
     position: relative;
     width: 45vw;
-    height: 10vh;
-    left: 7.5vw;
+    height: 10vw;
+    left: 9.5vw;
     background-color: aliceblue;
     border-radius: 30px;
     padding: 2.2vw;

@@ -20,8 +20,8 @@ export  class Sea {
     this.mesh = new THREE.Object3D();
 
     let geomWaves = new THREE.PlaneBufferGeometry(
-      2000,
-      2000,
+      800,
+      800,
       this.vertX,
       this.vertY
     );
@@ -34,7 +34,7 @@ export  class Sea {
       this.textOffsetX,
       this.textOffsetY
     );
-    textWaves.repeat.set(80, 80);
+    textWaves.repeat.set(20, 20);
 
     let matWaves = new THREE.MeshPhysicalMaterial({
       //color:0x307ddd,

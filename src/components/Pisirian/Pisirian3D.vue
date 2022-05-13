@@ -1,10 +1,9 @@
 <template>
-  <div  id="FullScreen_Pisirian">
+  <div id="FullScreen_Pisirian">
     <canvas id="three"></canvas>
   </div>
 </template>
 <script>
-
 import * as THREE from "three";
 import { Sea } from "../../Library/Sea";
 import { GlobalScene } from "../../Library/BasicLibrary";
@@ -150,6 +149,13 @@ export default {
 
       // console.log(this.scene);
     },
+    createCloud() {
+      this.cloudArray = new Array();
+      this.cloudArray.push(this.islandModel.getObjectByName("cloud01"));
+      this.cloudArray.push(this.islandModel.getObjectByName("cloud02"));
+      console.log(this.cloudArray);
+    },
+
     Animation_Three() {
       this.controls.update();
 
@@ -229,10 +235,11 @@ export default {
         "act_swordfish"
       );
       this.swordfishJump.AppendAnimation(this.mixer.clipAction(clip));
+      this.createCloud();
+      (this.boat = this.islandModel.getObjectByName("boat")),
+        // console.log(this.swordfishJump);
 
-      // console.log(this.swordfishJump);
-
-      this.LoadMarketFinish = true;
+        (this.LoadMarketFinish = true);
     },
     createSound() {
       const listener = new THREE.AudioListener();
@@ -251,8 +258,8 @@ export default {
       });
     },
     createSea() {
-      let seaVertices = 50;
-      let seaAmp = 0.8;
+      let seaVertices = 20;
+      let seaAmp = 1.3;
 
       this.sea = new Sea(seaAmp, seaVertices, seaVertices, 0.8, 0, 0);
       this.sea.init();
@@ -274,9 +281,18 @@ export default {
       this.camera.updateProjectionMatrix();
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     },
+    boatAnimation() {
+      this.boat.position.set(
+        Math.sin(performance.now() * 0.00001) * 10 - 5,
+        this.boat.position.y,
+        Math.cos(performance.now() * 0.00001) * 10 - 10
+      );
+    },
     updateAnimation() {
       if (this.LoadMarketFinish != true) return;
       this.mixer.update(0.016);
+      this.boatAnimation();
+      for (let j = 0; j < 2; j++) this.cloudArray[j].rotation.y += 0.0001;
       if (this.IS_MOBILE) {
         this.controls.mobileMove();
         this.handleDistance();
@@ -305,7 +321,7 @@ export default {
       const texture = new THREE.TextureLoader().load("../images/pin.png");
 
       // immediately use the texture for material creation
-      const material = new THREE.MeshBasicMaterial({
+      const material = new THREE.MeshStandardMaterial({
         map: texture,
         side: THREE.DoubleSide,
         transparent: true,

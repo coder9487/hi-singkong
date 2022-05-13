@@ -43,7 +43,7 @@ export function sceneSetting(passInScene){
 }
 
 export function collectObject(passInMarket) {
-  let keywrodList = ["monger", "ground","tutorial_click","sheet"];
+  let keywrodList = ["monger", "ground","tutorial_click","sheet",'wall'];
   let intersectObjectList = new Array();
   passInMarket.traverse((child) => {
     keywrodList.forEach((elem) => {

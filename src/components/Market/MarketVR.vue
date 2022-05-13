@@ -1,6 +1,6 @@
 <template>
   <div>
-    <canvas id="three" @click="permission"></canvas>
+    <canvas id="three" @click="permission()"></canvas>
   </div>
 </template>
 <script>
@@ -135,6 +135,7 @@ export default {
       this.$emit("loadingProgress", (val.loaded / 166225800).toFixed(2));
     },
     permission() {
+
       if (
         typeof window.DeviceOrientationEvent.requestPermission === "function"
       ) {
