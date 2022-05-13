@@ -1,5 +1,6 @@
 <template>
   <div>
+    <img id="aim" src="../../../public/images/swordfish/aim.png">
     <canvas id="three"></canvas>
   </div>
 </template>
@@ -76,7 +77,7 @@ export default {
     },
 
     loading_callbacks(val) {
-      // console.log("Pass into callbacks ", (val.loaded / 3246875).toFixed(2));
+      // // console.log("Pass into callbacks ", (val.loaded / 3246875).toFixed(2));
       this.$emit("loadingProgress", (val.loaded / 3246875).toFixed(2));
     },
     createSound() {
@@ -96,6 +97,10 @@ export default {
       });
     },
     Init_Three() {
+
+
+
+      this.aim = document.getElementById('aim')
       this.BoneSystem = {};
       this.raycaster = new THREE.Raycaster();
       // this.raycaster.far = 50;
@@ -221,9 +226,7 @@ export default {
         // this.swordfish.animations = this.swordfish.scene.animations;
       }
 
-      // console.log("this.swordfish.scene", this.swordfish.scene);
-      if (!GLTF_LOADER) {
-      }
+      // // console.log("this.swordfish.scene", this.swordfish.scene);
       let model = this.swordfish.scene;
       this.scene.add(this.swordfish.scene);
       this.swordfish.scene.traverse(function (object) {
@@ -244,14 +247,14 @@ export default {
       this.swordfishbody.position.y = 5;
       // this.swordfishbody.scale.set(0.7)
       this.spear = model.getObjectByName("spear");
-      // console.log("Monger skeleton system ", this.mongerSkeleton);
-      // console.log("Scene ", this.scene.children[2]);
+      // // console.log("Monger skeleton system ", this.mongerSkeleton);
+      // // console.log("Scene ", this.scene.children[2]);
       this.raycasterList = [];
       this.backOriginSpear = new THREE.Vector3();
 
       this.raycasterList.push(this.scene.children[1]);
        this.raycasterList.push(this.scene.children[2]);
-       console.log("this.scene",this.scene);
+       // console.log("this.scene",this.scene);
 
       this.mixer = new THREE.AnimationMixer(model);
       for (let i = 0; i <= 2; i++) {
@@ -259,7 +262,7 @@ export default {
           this.mixer.clipAction(this.swordfish.scene.animations[i]).play();
         else this.mixer.clipAction(this.swordfish.animations[i]).play();
 
-        // console.log(this.swordfish.animations[i]);
+        // // console.log(this.swordfish.animations[i]);
       }
 
       sceneSetting(this.swordfish.scene);
@@ -312,12 +315,15 @@ export default {
     },
     onMouseMove(event) {
       if (this.spear_direct_vector.state != "stop") {
-        console.log("Stop due to flying spear.");
+        // console.log("Stop due to flying spear.");
         return;
       }
 
       this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
       this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      this.aim.style.top = `${event.clientY}px`;
+      this.aim.style.left = `${event.clientX}px`;
+
 
       this.raycaster.setFromCamera(this.pointer, this.camera);
       this.castToSea = false;
@@ -342,14 +348,14 @@ export default {
         this.spear.rotateX(Math.PI);
       }
       else{
-        console.log(this.raycasterList)
+        // console.log(this.raycasterList)
       }
     },
     onDblclick() {
       if (this.spear_direct_vector.state == "trans") return;
-      // // console.log("arrowHelper ", this.arrowHelper);
+      // // // console.log("arrowHelper ", this.arrowHelper);
       if (this.castToSea) {
-        // // console.log("Spera eular ", this.spear.rotation);
+        // // // console.log("Spera eular ", this.spear.rotation);
         this.spear_direct_vector.vector = new THREE.Vector3();
 
         this.spear_direct_vector.vector = this.spear.getWorldDirection(
@@ -365,7 +371,7 @@ export default {
         this.spear_direct_vector.times = 0;
       }
 
-      // // console.log(direct_vector);
+      // // // console.log(direct_vector);
     },
     InitarrowHelper(dir) {
       //normalize the direction vector (convert to vector of length 1)
@@ -382,10 +388,11 @@ export default {
 
       switch (this.spear_direct_vector.state) {
         case "start":
+          console.log(this.spear.position)
           this.spear_direct_vector.state = "trans";
           break;
         case "trans":
-          // // console.log("during trans mode ", this.spear_direct_vector.times);
+          // // // console.log("during trans mode ", this.spear_direct_vector.times);
           /**Do not modifity code below */
           this.spear.translateZ(-0.05);
           this.spear.translateY(-0.00098);
@@ -397,10 +404,10 @@ export default {
           this.swordfishbody.getWorldPosition(swordfishPos);
           if (swordfishPos.distanceTo(spearWorldPos) < 3) {
             this.$store.commit("Swordfish/ShootSwordfish");
-            console.log(
-              "this.$store.state.Swordfish.swordfish",
-              this.$store.state.Swordfish.swordfish
-            );
+            // console.log(
+            //   "this.$store.state.Swordfish.swordfish",
+            //   this.$store.state.Swordfish.swordfish
+            // );
             // for (let i = 0; i <= 2; i++)
             //   this.mixer.clipAction(this.swordfish.animations[i]).reset();
 
@@ -412,10 +419,9 @@ export default {
 
             this.spear_direct_vector.times = 0;
             this.spear.position.set(
-              0.00818556547164917,
-              0.044652700424194336,
-              -0.0451924204826355
+ -0.05155903846025467, -0.019902408123016357,  -0.005295813083648682
             );
+           
             this.spear_direct_vector.state = "stop";
           }
 
@@ -435,4 +441,12 @@ export default {
   },
 };
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#aim{
+  position: absolute;
+  z-index: 10;
+  top:30vh;
+  width: 5vw;
+  transform: translate(-50%,-50%);
+}
+</style>

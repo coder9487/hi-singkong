@@ -1,5 +1,5 @@
 <template>
-  <div v-show="missionContentIndex < missionContent.length" class="mission">
+  <div v-show="missionContentIndex < missionContent.length && !(navigate_dialog_content_show_availbale ) && !fishmonger_dialog_content_show_available" class="mission">
     <div class="text">{{ missionContent[missionContentIndex] }}</div>
   </div>
   <img

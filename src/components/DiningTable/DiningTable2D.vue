@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-show="!showAkon" class="mission">
+    <div v-show="!showAkon && !showEnable" class="mission">
       <div class="text">吃飽後點擊阿公</div>
     </div>
     <div class="introduceBox" v-show="!showAkon">
@@ -79,20 +79,22 @@ export default {
           this.$store.commit("setFozzyFram", true);
           gsap.fromTo(
             ".Akon",
-            { opacity: 0 },
+            { opacity: 0, display: "none" },
             {
               opacity: 1,
               duration: 0.5,
+              display: "inline",
             }
           );
         } else {
           this.$store.commit("setFozzyFram", false);
           gsap.fromTo(
             ".Akon",
-            { opacity: 1 },
+            { opacity: 1, display: "inline" },
             {
               opacity: 0,
               duration: 0.5,
+              display: "none",
             }
           );
         }
@@ -161,8 +163,6 @@ export default {
       let imagesUrl = `../../images/diningtable/${this.getDish}.png`;
       console.log("calling path ", imagesUrl);
       return imagesUrl;
-
-      return `../../../public/images/diningtable/${this.imagepath}.png`;
     },
     resetShowenable() {
       this.showEnable = false;
@@ -178,8 +178,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-
-
 .introduceBox {
   opacity: 0;
   &-photo {
@@ -188,8 +186,7 @@ export default {
     top: 13vh;
     left: 13vw;
     width: 73vw;
-    @media screen and (min-width: 1024px)
-    {
+    @media screen and (min-width: 1024px) {
       top: 17vh;
     }
     // height: 66vh;
@@ -208,6 +205,7 @@ export default {
 }
 
 .Akon {
+   display: none;
   opacity: 0;
   &-charactor {
     // width: 40vw;
@@ -218,8 +216,4 @@ export default {
     bottom: 0;
   }
 }
-
-
-
-
 </style>
