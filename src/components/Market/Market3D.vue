@@ -2,7 +2,6 @@
   <div>
     <canvas id="three"></canvas>
   </div>
-  <img v-if="0" id="pin" src="../../../public/images/pin.png"/>
 </template>
 <script>
 import * as THREE from "three";
@@ -23,7 +22,6 @@ import {
 export default {
   setup() {
     const Document = document;
-
     let EnableControl = true;
     let direc = reactive({ hori: 0, vert: 0 });
     return {
@@ -36,12 +34,6 @@ export default {
     this.Init_Three();
     this.AddEventListener();
     this.Animation_Three();
-  },
-  onBeforeUnmount() {
-    alert("");
-    while (this.scene.children.length > 0) {
-      this.scene.remove(this.scene.children[0]);
-    }
   },
   data() {
     return {
@@ -56,9 +48,21 @@ export default {
   },
   watch: {
     distoryScene: function () {
+      
+      Object.assign(this.$data, this.$options.data())
       while (this.scene.children.length > 0) {
+        if (this.scene.children[0].type == "Group") {
+          this.scene.children[0].traverse(function (obj) {
+            if (obj.type === "Mesh") {
+              obj.geometry.dispose();
+              obj.material.dispose();
+            }
+          });
+        }
         this.scene.remove(this.scene.children[0]);
       }
+      this.renderer.dispose()
+      this.RemoveEventListener();
     },
     direc: {
       handler() {
@@ -130,14 +134,7 @@ export default {
       this.$emit("loadingProgress", (val.loaded / 98073222).toFixed(2));
     },
     Init_Three() {
-
-      this.pin2d = document.getElementById('pin')
-
-
-
-
-
-
+      this.pin2d = document.getElementById("pin");
       this.gsapTimeline = gsap.timeline();
       this.raycaster = new THREE.Raycaster();
       this.raycaster.far = 10;
@@ -149,10 +146,9 @@ export default {
       this.renderer = new THREE.WebGLRenderer({
         canvas,
         antialias: true,
-        // alpha: true,
-        precision: "lowp",
         powerPreference: "high-performance",
       });
+      window.Renderer = this.renderer;
       this.renderer.setClearColor(new THREE.Color("#ffffff"), 0);
       this.camera = new THREE.PerspectiveCamera(
         50,
@@ -239,7 +235,6 @@ export default {
     },
 
     async loadMarket() {
-      console.clear();
       const loader = new THREE.ObjectLoader();
       this.marketModel = await loader.loadAsync(
         "../models/market_lastest.json",
@@ -561,7 +556,7 @@ export default {
         new PasserBy(
           this.camera,
           this.marketModel.getObjectByName("par_a_kon_start"),
-          6
+          3
         )
       );
 
@@ -657,21 +652,29 @@ export default {
       }
       // this.DragLady.axuobj.object.lookAt(this.camera.position);
       this.akonList[0].watchMe();
+            if (this.akonList[0].DoOnce == false) {
+        if (this.akonList[0].isApproach()) {
+          // alert()
+          this.akonList[0].DoOnce = true;
+          this.dbClickEvent.eventName = "tutorial"
+          this.onDblclick()
+        }
+      }
 
       if (
         this.camera.position.distanceTo(new THREE.Vector3(-44.4, 1.65, -4.12)) <
         this.akonList[1].toggleDistance
       ) {
         this.dbClickEvent.eventName = "";
-          this.cube.position.set(
-            this.camera.position.x,
-            this.camera.position.y,
-            this.camera.position.z
-          );
-          this.cube.lookAt(-44.4, 1.65, -4.12);
-          let startOrientation = new THREE.Quaternion();
+        this.cube.position.set(
+          this.camera.position.x,
+          this.camera.position.y,
+          this.camera.position.z
+        );
+        this.cube.lookAt(-44.4, 1.65, -4.12);
+        let startOrientation = new THREE.Quaternion();
 
-          startOrientation = this.cube.quaternion.clone();
+        startOrientation = this.cube.quaternion.clone();
 
         this.akonList[1].toggleDistance = 1000;
         this.controls.enabled = false;
@@ -715,7 +718,7 @@ export default {
           this.gsapTimeline
             .to(this.camera.quaternion, {
               duration: 2,
-              
+
               x: startOrientation.x,
               y: -startOrientation.y,
               z: startOrientation.z,
@@ -766,7 +769,6 @@ export default {
                 }, 2000);
               },
             });
-
         }
       }
 
@@ -796,7 +798,7 @@ export default {
       }
       for (let i = 0; i < 3; i++) {
         this.boat[i].position.y =
-          Math.sin((performance.now() + i * 1000) * 0.001) * 0.1 + 0.2;
+          Math.sin((performance.now() + i * 1000) * 0.001) * 0.1 + 0.33;
       }
 
       this.mixer.update(0.016);
@@ -856,11 +858,11 @@ export default {
   top: 0;
 }
 
-#pin{
+#pin {
   width: 10vw;
   height: auto;
   position: absolute;
   z-index: 10;
-  top:10vh;
+  top: 10vh;
 }
 </style>

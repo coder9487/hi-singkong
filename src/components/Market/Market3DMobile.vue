@@ -1,11 +1,10 @@
 <template>
-  <div v-touch-pan.prevent="direciton" id="FullScreen">
+  <div v-touch-pan.prevent="direciton" @touchend="resetDire" id="FullScreen">
     <canvas id="three"></canvas>
   </div>
 </template>
 
 <script>
-
 import * as THREE from "three";
 import { Sea } from "../../Library/Sea";
 import { GlobalScene } from "../../Library/BasicLibrary";
@@ -19,11 +18,9 @@ import {
   FishMonger,
   AnimateObject,
   HoverCharacter,
-  
 } from "../../Library/AnimationLibrary";
 
 export default {
-
   setup() {
     const Document = document;
     let EnableControl = true;
@@ -60,6 +57,22 @@ export default {
     };
   },
   watch: {
+    distoryScene: function () {
+      console.log(this.scene);
+      while (this.scene.children.length > 0) {
+        if (this.scene.children[0].type == "Group") {
+          this.scene.children[0].traverse(function (obj) {
+            if (obj.type === "Mesh") {
+              obj.geometry.dispose();
+              obj.material.dispose();
+            }
+          });
+        }
+        this.scene.remove(this.scene.children[0]);
+      }
+      this.renderer.dispose()
+      this.RemoveEventListener();
+    },
     direc: {
       handler: function () {
         this.$store.commit("setLookDir", {
@@ -91,6 +104,12 @@ export default {
     },
   },
   methods: {
+    resetDire(){
+      this.$store.commit("setLookDir", {
+        x: 0,
+        y: 0,
+      });
+    },
     renderHandle() {
       if (this.PostProcessingEnable) this.composer.render();
       else this.renderer.render(this.scene, this.camera);
@@ -108,8 +127,10 @@ export default {
     direciton({ ...newInfo }) {
       this.direc.hori = newInfo.delta.x.toFixed(0);
       this.direc.vert = newInfo.delta.y.toFixed(0);
-      this.direc.hori = Math.min(Math.max(parseInt(this.direc.hori), -5), 5)*3;
-      this.direc.vert = Math.min(Math.max(parseInt(this.direc.vert), -5), 5)*3;
+      this.direc.hori =
+        Math.min(Math.max(parseInt(this.direc.hori), -5), 5) * 5;
+      this.direc.vert =
+        Math.min(Math.max(parseInt(this.direc.vert), -5), 5) * 5;
       // console.log(this.direc);
 
       this.onMouseMove();
@@ -140,7 +161,6 @@ export default {
         canvas,
         antialias: true,
         alpha: true,
-        precision: "lowp",
         powerPreference: "high-performance",
       });
       this.renderer.setClearColor(new THREE.Color("#ffffff"), 0);
@@ -149,7 +169,7 @@ export default {
         50,
         window.innerWidth / window.innerHeight,
         0.1,
-        50
+        400
       );
       this.camera.position.set(20, 1.5, 0);
 
@@ -391,6 +411,12 @@ export default {
         let objTemp = this.marketModel.getObjectByName(`par_passerby0${i}`);
         this.passerbyList.push(new PasserBy(this.camera, objTemp, 6));
       }
+      this.boat = new Array();
+      for (let i = 1; i <= 3; i++) {
+        let objTemp = this.marketModel.getObjectByName(`3d_boat0${i}`);
+        console.log(objTemp);
+        this.boat.push(objTemp);
+      }
 
       this.fishmongerList = new Array();
       for (let i = 1; i <= 4; i++) {
@@ -541,7 +567,11 @@ export default {
       this.controls.mobileMove();
       this.renderHandle();
 
-      for (let j = 0; j < 2; j++) this.cloudArray[j].rotation.y += 0.0001;
+      // for (let j = 0; j < 2; j++) this.cloudArray[j].rotation.y += 0.0001;
+      // for (let i = 0; i < 3; i++) {
+      //   this.boat[i].position.y =
+      //     Math.sin((performance.now() + i * 1000) * 0.001) * 0.1 + 0.33;
+      // }
 
       // this.akonArrowList[0].object.lookAt(this.camera.position)
       /** passerby will filp if camera approach them */
@@ -697,10 +727,9 @@ export default {
     },
     onMouseMove(event) {
       if (this.LoadMarketFinish != true) return;
-      if(event != null)
-      {
-      this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-      this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+      if (event != null) {
+        this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
       }
 
       this.RaycasterHandler(this.casterList);

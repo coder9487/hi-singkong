@@ -105,11 +105,12 @@ export default defineComponent({
       // console.log("loading progress ", this.loading);
       let loadingWave = document.getElementById("loading-video");
       if (this.IS_MOBILE)
-        loadingWave.style.bottom = this.loading * 0.3 - 70 + "%";
-      else loadingWave.style.bottom = this.loading * 0.2 + "%";
+        loadingWave.style.bottom = this.loading * 0.3 + "%";
+      else loadingWave.style.bottom = this.loading * 0.4 + "%";
       if (
-        this.loading >= 95 &&
-        ((this.ENABLE_FOR_MOBILE && this.IS_MOBILE) || !this.IS_MOBILE)
+        this.loading >= 98 &&
+        ((this.ENABLE_FOR_MOBILE && this.IS_MOBILE) || !this.IS_MOBILE) &&
+        !this.DEV_FOR_LOADING
       ) {
         setTimeout(() => {
           this.showingFlag = true;
@@ -178,71 +179,71 @@ export default defineComponent({
 });
 </script>
 <style lang="scss">
-@media screen and (min-device-width: 1024px) {
-}
-.loadingPage {
-  width: 100vw;
-  height: 100vh;
-  //  background-color: cadetblue;
-  &-mask {
-    //  opacity: 0.3;
-    position: fixed;
-    width: 100%;
-    z-index: 10;
-    height: auto;
-    top: -5vh;
-  }
-  &-text {
-    left: 50vw;
-    transform: translateX(-50%);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 20;
-    position: fixed;
-    text-align: center;
-    bottom: 25%;
-    font-size: 10px;
-    color: #174275;
-    margin: 0 auto;
-    @media screen and (min-device-width: 1024px) {
-      bottom: 30%;
-      font-size: 20px;
-    }
-    &-content {
-      display: flex;
-      align-content: center;
-      align-items: center;
-      justify-content: center;
-    }
-    &-dev {
-      transform: translateX(-10%);
-    }
-  }
-  &-percentage {
-    z-index: 20;
-    position: fixed;
-    font-size: 50px;
-    color: darkorange;
-    bottom: 10%;
-    left: 40%;
-    @media screen and (min-device-width: 1024px) {
-      bottom: 10%;
-      left: 40%;
-    }
-  }
-  &-loading-video {
-    opacity: 0;
-    position: absolute;
-    // left: 15%;
-    bottom: -70%;
-    @media screen and (min-device-width: 1024px) {
-      left: 15%;
-      bottom: -50vh;
-    }
-    z-index: 8;
-  }
-}
+// @media screen and (min-device-width: 1024px) {
+// }
+// .loadingPage {
+//   width: 100vw;
+//   height: 100vh;
+//   //  background-color: cadetblue;
+//   &-mask {
+//     //  opacity: 0.3;
+//     position: fixed;
+//     width: 100%;
+//     z-index: 10;
+//     height: auto;
+//     top: -5vh;
+//   }
+//   &-text {
+//     left: 50vw;
+//     transform: translateX(-50%);
+//     display: flex;
+//     justify-content: space-around;
+//     align-items: center;
+//     z-index: 20;
+//     position: fixed;
+//     text-align: center;
+//     bottom: 25%;
+//     font-size: 10px;
+//     color: #174275;
+//     margin: 0 auto;
+//     @media screen and (min-device-width: 1024px) {
+//       bottom: 30%;
+//       font-size: 20px;
+//     }
+//     &-content {
+//       display: flex;
+//       align-content: center;
+//       align-items: center;
+//       justify-content: center;
+//     }
+//     &-dev {
+//       transform: translateX(-10%);
+//     }
+//   }
+//   &-percentage {
+//     z-index: 20;
+//     position: fixed;
+//     font-size: 50px;
+//     color: darkorange;
+//     bottom: 10%;
+//     left: 40%;
+//     @media screen and (min-device-width: 1024px) {
+//       bottom: 10%;
+//       left: 40%;
+//     }
+//   }
+//   &-loading-video {
+//     opacity: 0;
+//     position: absolute;
+//     // left: 15%;
+//     bottom: -70%;
+//     @media screen and (min-device-width: 1024px) {
+//       left: 15%;
+//       bottom: -50vh;
+//     }
+//     z-index: 8;
+//   }
+// }
 #DiningTable3D-tag {
   position: fixed;
   // background-color: #35909c;
@@ -259,17 +260,17 @@ export default defineComponent({
 #colorSlide {
   background-color: black;
 }
-@media screen and (orientation: portrait) {
-  .loadingPage {
-    &-loading-video {
-      top: 20vh;
-    }
-    &-mask {
-      top: 20vh;
-      height: 100vh;
-      width: auto;
-      transform: translateX(-25%);
-    }
-  }
-}
+// @media screen and (orientation: portrait) {
+//   .loadingPage {
+//     &-loading-video {
+//       top: 20vh;
+//     }
+//     &-mask {
+//       top: 20vh;
+//       height: 100vh;
+//       width: auto;
+//       transform: translateX(-25%);
+//     }
+//   }
+// }
 </style>

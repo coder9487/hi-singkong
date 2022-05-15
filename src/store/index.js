@@ -10,6 +10,9 @@ const Market = {
     Fozzy3D: false,
   }),
   mutations: {
+    ResetTutorialDialog(state){
+      state.tutorialIndex = 0
+    },
     distoryScene(state){
         state.distoryScene = true
     },
