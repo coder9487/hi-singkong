@@ -279,7 +279,7 @@ export default {
       }
       if (this.dialogContent_Index == 11) {
          this.$store.commit("setFozzyFram", false);
-        this.$router.push("/diningTable");
+        this.$router.replace("/diningTable");
       }
     },
   },

@@ -179,6 +179,7 @@ export default defineComponent({
     playVideo() {
       this.hideFlag = false;
       var myVideo = document.getElementById("startUpVedio");
+      myVideo.style.zIndex = 50;
       myVideo.play();
     },
   },
@@ -207,7 +208,7 @@ export default defineComponent({
 
 #startUpVedio {
   width: 100vw;
-  height: auto;
+  height: 100vh;
   position: absolute;
   z-index: 2;
 }

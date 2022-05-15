@@ -1,5 +1,9 @@
 <template>
-  <div v-touch-pan.prevent="direciton" id="FullScreen_Pisirian">
+  <div
+    v-touch-pan.prevent="direciton"
+    @touchend="resetDire"
+    id="FullScreen_Pisirian"
+  >
     <canvas id="three"></canvas>
   </div>
 </template>
@@ -71,8 +75,10 @@ export default {
     direciton({ ...newInfo }) {
       this.direc.hori = newInfo.delta.x.toFixed(0);
       this.direc.vert = newInfo.delta.y.toFixed(0);
-      this.direc.hori = Math.min(Math.max(parseInt(this.direc.hori), -5), 5)*3;
-      this.direc.vert = Math.min(Math.max(parseInt(this.direc.vert), -5), 5)*3;
+      this.direc.hori =
+        Math.min(Math.max(parseInt(this.direc.hori), -5), 5) * 3;
+      this.direc.vert =
+        Math.min(Math.max(parseInt(this.direc.vert), -5), 5) * 3;
       // console.log(this.direc);
       if (newInfo.isFinal) {
         this.direc.hori = 0;
@@ -88,7 +94,6 @@ export default {
       this.raycaster = new THREE.Raycaster();
       this.raycaster.far = 10;
       this.pointer = new THREE.Vector2();
-
       this.scene = new THREE.Scene();
       this.scene.background = new THREE.Color(0x3cc4d0);
       let canvas = document.querySelector("#three");
@@ -143,7 +148,9 @@ export default {
       this.scene.background.minFilter = THREE.LinearFilter;
 
       // load a resource
+      this.gsapTimeline = gsap.timeline();
       this.pin = this.createPointer();
+      this.createNullObject();
       this.createSea();
       this.loadTable();
 
@@ -165,6 +172,20 @@ export default {
 
       requestAnimationFrame(this.Animation_Three);
     },
+    resetDire() {
+      this.$store.commit("setLookDir", {
+        x: 0,
+        y: 0,
+      });
+    },
+    createNullObject() {
+      const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+      const material = new THREE.MeshBasicMaterial({});
+      this.cube = new THREE.Mesh(geometry, material);
+      this.cube.visible = false;
+      this.scene.add(this.cube);
+      this.startOrientation = new THREE.Quaternion();
+    },
     AddEnentListener() {
       this.Window = window;
       // this.Window.addEventListener("pointermove", this.onPointerMove);
@@ -173,7 +194,13 @@ export default {
       if (!this.IS_MOBILE)
         this.Window.addEventListener("mousemove", this.onMouseMove);
     },
-
+    RemoveEnentListener() {
+      // this.Window.addEventListener("pointermove", this.onPointerMove);
+      this.Window.removeEventListener("resize", this.onWindowResize);
+      this.Window.removeEventListener("dblclick", this.onClick);
+      if (!this.IS_MOBILE)
+        this.Window.removeEventListener("mousemove", this.onMouseMove);
+    },
     async loadTable() {
       // console.clear();
       this.createSound();
@@ -210,17 +237,21 @@ export default {
         this.islandModel.getObjectByName(`a_kon_body`),
         3
       );
+      this.boat = this.islandModel.getObjectByName(`par_boat`);
 
       this.raycasterList = new Array();
       this.raycasterList.push(this.islandModel.getObjectByName("ground"));
-      // this.raycasterList.push(this.islandModel.getObjectByName("end_wall"));
+      this.raycasterList.push(this.islandModel.getObjectByName("wall"));
+      this.raycasterList.push(this.islandModel.getObjectByName("wall_floor"));
 
       // console.log("raycasterList", this.raycasterList);
-
+      console.log("Animation List ", this.gltf_islandModel.animations);
       this.mixer = new THREE.AnimationMixer(this.islandModel);
-      for (let i = 0; i < 2; i++) {
-        let a = this.mixer.clipAction(this.gltf_islandModel.animations[i]);
-        a.play();
+      for (let i = 0; i < 16; i++) {
+        if (i != 3) {
+          let a = this.mixer.clipAction(this.gltf_islandModel.animations[i]);
+          a.play();
+        }
       }
 
       this.swordfishJump = null;
@@ -236,10 +267,8 @@ export default {
       );
       this.swordfishJump.AppendAnimation(this.mixer.clipAction(clip));
       this.createCloud();
-      (this.boat = this.islandModel.getObjectByName("boat")),
-        // console.log(this.swordfishJump);
 
-        (this.LoadMarketFinish = true);
+      this.LoadMarketFinish = true;
     },
     createSound() {
       const listener = new THREE.AudioListener();
@@ -259,7 +288,7 @@ export default {
     },
     createSea() {
       let seaVertices = 20;
-      let seaAmp = 1.3;
+      let seaAmp = 1.0;
 
       this.sea = new Sea(seaAmp, seaVertices, seaVertices, 0.8, 0, 0);
       this.sea.init();
@@ -282,15 +311,11 @@ export default {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     },
     boatAnimation() {
-      this.boat.position.set(
-        Math.sin(performance.now() * 0.00001) * 10 - 5,
-        this.boat.position.y,
-        Math.cos(performance.now() * 0.00001) * 10 - 10
-      );
+      this.boat.position.y = Math.sin(performance.now() * 0.002) * 0.1 + 2;
     },
     updateAnimation() {
       if (this.LoadMarketFinish != true) return;
-      this.mixer.update(0.016);
+      this.mixer.update(0.008);
       this.boatAnimation();
       for (let j = 0; j < 2; j++) this.cloudArray[j].rotation.y += 0.0001;
       if (this.IS_MOBILE) {
@@ -345,7 +370,7 @@ export default {
             x: 26.960382,
             z: -1.871433,
             onComplete: () => {
-              gsap.to(this.camera.quaternion, {
+              this.gsapTimeline.to(this.camera.quaternion, {
                 duration: 1.5,
                 w: 0.7067715186504848,
                 x: 0.07662949140912478,
@@ -362,26 +387,67 @@ export default {
         for (let i = 0; i < 4; i++)
           if (this.passerbyList[i].isApproach()) {
             this.$store.commit("Pisirian/setTogglePasserby", i);
+            switch (i) {
+              case 0:
+              case 1:
+              case 3:
+                break;
+              //lookat
+              // this.cube.position.set(
+              //   this.camera.position.x,
+              //   this.camera.position.y,
+              //   this.camera.position.z
+              // );
+              // this.cube.lookAt(
+              //   this.passerbyList[i].object.position.x * 10,
+              //   this.passerbyList[i].object.position.y * 10 - 0.5,
+              //   this.passerbyList[i].object.position.z * 10
+              // );
+
+              // this.startOrientation = this.cube.quaternion.clone().normalize();
+              // this.RemoveEnentListener();
+              // this.gsapTimeline.to(this.camera.quaternion, {
+              //   duration: 2,
+              //   x: this.startOrientation.x,
+              //   y: -this.startOrientation.y,
+              //   z: this.startOrientation.z,
+              //   w: this.startOrientation.w,
+              //   onComplete: () => {
+              //     this.camera.lookAt(
+              //       this.passerbyList[i].object.position.x * 10,
+              //       this.passerbyList[i].object.position.y * 10 - 0.5,
+              //       this.passerbyList[i].object.position.z * 10
+              //     );
+              //     this.AddEnentListener();
+              //   },
+              // });
+              // break;
+            }
 
             if (i == 3 - 1 && this.swordfishJump.DoOnce) {
               if (this.DO_ONCE_DONE == false) {
-                gsap.to(this.camera.position, {
-                  x: 37.7748,
-                  z: -1.264,
-                  duration: 0.2,
-                  onComplete: () => {
-                    this.$store.commit("Pisirian/setTogglePasserby", 2);
-                    i = 2;
-                    gsap.to(this.camera.quaternion, {
-                      x: 0.0041123,
-                      y: 0.994159,
-                      z: 0.099748,
-                      w: -0.04098,
-                      duration: 0.8,
-                    });
-                  },
-                });
-                this.passerbyList[2].toggleDistance = 2;
+                this.RemoveEnentListener();
+                this.gsapTimeline
+                  .to(this.camera.position, {
+                    x: 37.7748,
+                    z: -1.264,
+                    duration: 0.2,
+                    onComplete: () => {
+                      this.$store.commit("Pisirian/setTogglePasserby", 2);
+                      i = 2;
+                    },
+                  })
+                  .to(this.camera.quaternion, {
+                    x: 0.0041123,
+                    y: 0.994159,
+                    z: 0.099748,
+                    w: -0.04098,
+                    duration: 0.8,
+                    onComplete: () => {
+                      this.AddEnentListener();
+                      this.passerbyList[2].toggleDistance = 2;
+                    },
+                  });
               }
               if (this.DO_ONCE_DONE == false) {
                 this.DO_ONCE_DONE = true;
@@ -402,7 +468,7 @@ export default {
       }
     },
     onClick() {
-      gsap.to(this.camera.position, {
+      this.gsapTimeline.to(this.camera.position, {
         duration: 1.5,
         repeat: 0,
         x: this.pin.position.x,

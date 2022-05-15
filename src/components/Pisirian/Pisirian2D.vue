@@ -19,7 +19,7 @@
         恭喜你離成功更近一步，記錄你的<b>成功之旅</b>或對自己的<b>成功期許</b>，讓阿公幫你<b>成功寄出</b>吧！一定很漂亮!
       </div>
       <div class="dialogArea-group">
-        <div @click.stop="this.$router.push('/Final')" class="button color-orange">
+        <div @click.stop="this.$router.replace('/Final')" class="button color-orange">
           下次成功見!
         </div>
       </div>

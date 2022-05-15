@@ -1,6 +1,6 @@
 <template>
   <div>
-    <img id="aim" src="../../../public/images/swordfish/aim.png">
+    <img id="aim" src="../../../public/images/swordfish/aim.png" />
     <canvas id="three"></canvas>
   </div>
 </template>
@@ -97,10 +97,7 @@ export default {
       });
     },
     Init_Three() {
-
-
-
-      this.aim = document.getElementById('aim')
+      this.aim = document.getElementById("aim");
       this.BoneSystem = {};
       this.raycaster = new THREE.Raycaster();
       // this.raycaster.far = 50;
@@ -199,7 +196,7 @@ export default {
 
       if (!this.IS_MOBILE) {
         window.addEventListener("mousemove", this.onMouseMove);
-       window.addEventListener("click", this.onDblclick);
+        window.addEventListener("click", this.onDblclick);
       } else {
         window.addEventListener("touchmove", this.direciton);
       }
@@ -253,8 +250,8 @@ export default {
       this.backOriginSpear = new THREE.Vector3();
 
       this.raycasterList.push(this.scene.children[1]);
-       this.raycasterList.push(this.scene.children[2]);
-       // console.log("this.scene",this.scene);
+      this.raycasterList.push(this.scene.children[2]);
+      // console.log("this.scene",this.scene);
 
       this.mixer = new THREE.AnimationMixer(model);
       for (let i = 0; i <= 2; i++) {
@@ -285,7 +282,7 @@ export default {
     },
     createSea() {
       let seaVertices = 100;
-      let seaAmp = 1.2;
+      let seaAmp = 1.6;
       this.sea = new Sea(seaAmp, seaVertices, seaVertices, 0.9, 0, 0);
       this.sea.initWideSea();
       this.sea.mesh.name = "Sea";
@@ -324,12 +321,10 @@ export default {
       this.aim.style.top = `${event.clientY}px`;
       this.aim.style.left = `${event.clientX}px`;
 
-
       this.raycaster.setFromCamera(this.pointer, this.camera);
       this.castToSea = false;
       const intersects = this.raycaster.intersectObjects(this.raycasterList);
       if (intersects.length > 0) {
-
         this.castToSea = true;
         this.spear.lookAt(intersects[0].point);
 
@@ -346,8 +341,7 @@ export default {
         this.TargetPosition = intersects[0].point;
 
         this.spear.rotateX(Math.PI);
-      }
-      else{
+      } else {
         // console.log(this.raycasterList)
       }
     },
@@ -388,7 +382,7 @@ export default {
 
       switch (this.spear_direct_vector.state) {
         case "start":
-          console.log(this.spear.position)
+          console.log(this.spear.position);
           this.spear_direct_vector.state = "trans";
           break;
         case "trans":
@@ -419,9 +413,11 @@ export default {
 
             this.spear_direct_vector.times = 0;
             this.spear.position.set(
- -0.05155903846025467, -0.019902408123016357,  -0.005295813083648682
+              0.00818556547164917,
+              0.044652700424194336,
+              -0.04519243165850639
             );
-           
+
             this.spear_direct_vector.state = "stop";
           }
 
@@ -436,17 +432,17 @@ export default {
       this.lowersea.mesh.position.x += 0.5;
       this.mongerSkeleton.position.y = this.boat.position.y =
         Math.sin(Date.now() / 500) * 0.05;
-      this.boat.position.y += 0.22;
+      this.boat.position.y += 0;
     },
   },
 };
 </script>
 <style lang="scss" scoped>
-#aim{
+#aim {
   position: absolute;
   z-index: 10;
-  top:30vh;
+  top: 30vh;
   width: 5vw;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 </style>

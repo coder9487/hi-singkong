@@ -49,9 +49,10 @@ const router = createRouter({
   routes,
 });
 
-// router.afterEach(function (to, from, next) {
-//   // window.location.reload();
-//   next();
-// });
+router.afterEach(function (to, from, next) {
+  // window.location.reload();
+  console.log(to)
+  return true;
+});
 
 export default router;

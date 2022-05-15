@@ -1,9 +1,20 @@
 <template>
-  <div v-show="missionContentIndex < missionContent.length && !(navigate_dialog_content_show_availbale ) && !fishmonger_dialog_content_show_available" class="mission">
+  <div
+    v-show="
+      missionContentIndex < missionContent.length &&
+      !navigate_dialog_content_show_availbale &&
+      !fishmonger_dialog_content_show_available
+    "
+    class="mission"
+  >
     <div class="text">{{ missionContent[missionContentIndex] }}</div>
   </div>
   <img
     v-if="IS_MOBILE"
+    v-show="
+      !navigate_dialog_content_show_availbale &&
+      !fishmonger_dialog_content_show_available
+    "
     @touchstart.prevent.stop="touchFn('start')"
     @touchend.prevent="touchFn('end')"
     id="goBtn"
@@ -88,7 +99,7 @@
         <div
           class="fishmonger-dialog-button button color-orange"
           id="escapeIntroduceBox"
-          @click="FishMonger_handler('next')"
+          @click.stop="FishMonger_handler('next')"
           v-if="
             fishmonger_dialog_content_index ==
             fishmonger_dialog_content_index_limit[fishmonger_sequence] - 1
@@ -99,7 +110,11 @@
         <div
           class="fishmonger-dialog-button button color-cyan"
           id="nextIntroduceBox"
-          @click="FishMonger_handler('end')"
+          @click.stop="FishMonger_handler('end')"
+          v-if="
+            fishmonger_dialog_content_index !=
+            fishmonger_dialog_content_index_limit[fishmonger_sequence] - 1
+          "
         >
           了解，謝謝
         </div>
@@ -115,6 +130,8 @@ import lottie from "lottie-web";
 export default {
   name: "Market2D",
   mounted() {
+    this.navigate_dialog_content_index = 0;
+    this.$store.commit("Market/ResetTutorialDialog");
     this.changeLottie();
     let state = 0;
     if (!this.detectPaltform()) {
@@ -342,7 +359,6 @@ export default {
       this.navigate_dialog_content_index++;
       if (this.navigate_dialog_content_index == 10) {
         this.$store.commit("Market/distoryScene");
-
         this.$router.replace("/Swordfish");
       }
 
@@ -492,10 +508,6 @@ $content-text-size-pc: 1.4vw;
       }
       $content-border-gap: 20px;
 
-      // margin-left: 7%;
-      // margin-right: 7%;
-      // margin-top: 6%;
-      // margin-bottom: 7%;
       margin: 5%;
 
       color: rgb(18, 89, 74);
@@ -531,21 +543,23 @@ $content-text-size-pc: 1.4vw;
   &-monger {
     position: absolute;
     bottom: 0;
-    right: 5%;
     height: 90vh;
     z-index: 5;
     right: -10vw;
+    @media screen and (min-width: 1024px) {
+      right: -15vw;
+    }
   }
   &-dialog {
     width: 65vw;
     position: absolute;
     right: 30vw;
     // background-color: aquamarine;
-    top: 20vw;
+    top: 5vw;
     left: 10vw;
 
     @media screen and (min-width: 1024px) {
-      top: 10vh;
+      top: 20vh;
       max-width: 60vw;
       left: 15vw;
     }
@@ -568,11 +582,12 @@ $content-text-size-pc: 1.4vw;
       }
     }
     &-button {
+      font-size: 1.8vw;
       justify-content: space-around;
 
       @media screen and (min-width: 1024px) {
-        margin-right: 5%;
-        margin-left: 5%;
+        // margin-right: 5%;
+        // margin-left: 5%;
         height: 60px;
         min-width: 20vw;
         border-radius: 50px;
