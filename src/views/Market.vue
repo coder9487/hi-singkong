@@ -110,7 +110,7 @@ export default defineComponent({
       let loadingWave = document.getElementById("loading-video");
       if (this.IS_MOBILE)
         loadingWave.style.bottom = this.loading  * 0.1 +10+ "%";
-      else loadingWave.style.bottom = this.loading * 0.4 + "%";
+      else loadingWave.style.bottom = this.loading * 0.1+ 30 + "%";
       if (
         this.loading >= 98 &&
         ((this.ENABLE_FOR_MOBILE && this.IS_MOBILE) || !this.IS_MOBILE) &&

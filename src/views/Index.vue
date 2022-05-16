@@ -7,7 +7,7 @@
       src="images/start/1-1.png"
       class="shortcut-list-tag shortcut-list-tag-animation"
       id="shortcut-list-tag"
-      @click="toggleList"
+      @click.stop="toggleList"
     />
     <div
       v-show="hideFlag"
@@ -21,7 +21,10 @@
         :id="`shortcut-list-photo-${i + 1}`"
         class="shortcut-list-photo"
         :src="`images/start/1-${i + 1}.png`"
-        @click="fullScreen();this.$router.push(routerLink.desktop[i - 1])"
+        @click="
+          fullScreen();
+          this.$router.push(routerLink.desktop[i - 1]);
+        "
       />
     </div>
 
@@ -40,7 +43,10 @@
           :id="`mobile-list-photo-${i}`"
           class="mobile-list-photo"
           :src="`images/start/mobile/1-${i}.png`"
-          @click="fullScreen();this.$router.push(routerLink.mobile[i - 1])"
+          @click="
+            fullScreen();
+            this.$router.push(routerLink.mobile[i - 1]);
+          "
         />
       </p>
       <p>
@@ -50,7 +56,10 @@
           :id="`mobile-list-photo-${i + 3}`"
           class="mobile-list-photo"
           :src="`images/start/mobile/1-${i + 3}.png`"
-          @click="fullScreen();this.$router.push(routerLink.mobile[i + 2])"
+          @click="
+            fullScreen();
+            this.$router.push(routerLink.mobile[i + 2]);
+          "
         />
       </p>
     </div>
@@ -132,7 +141,7 @@ export default defineComponent({
       mobileShow: ref(false),
       hideFlag: true,
       clickEnable: false,
-      enableList: ref(false),
+      enableList: ref(true),
     };
   },
   methods: {
@@ -188,9 +197,9 @@ export default defineComponent({
 <style lang="scss" scoped>
 .mobile {
   &-icon {
-    right: 5vw;
-    top: 5vw;
-    width: 5vw;
+    right: 14vw;
+    top: 3vw;
+    width: 4vw;
     position: absolute;
     z-index: 10;
   }
@@ -278,9 +287,9 @@ export default defineComponent({
     }
     &:hover {
       cursor: pointer;
-      right: 0;
+      right: 0vw;
       transition: 1s;
-
+      transform: translateX(0%);
       animation-play-state: paused;
     }
   }

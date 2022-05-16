@@ -50,7 +50,7 @@
       <img
         class="icon-fullscreen"
         src="icons/fullscreen.png"
-        @click.stop="fullScreen"
+        @click.stop="fullscreenEnable = !fullscreenEnable"
       />
     </q-page-container>
   </q-layout>
@@ -96,6 +96,7 @@ export default {
   data() {
     return {
       show: ref(false),
+      fullscreenEnable: ref(false),
       setting: {
         performace: ref("std"),
         sound: ref(true),
@@ -103,25 +104,37 @@ export default {
     };
   },
   watch: {
+    fullscreenEnable: function () {
+      switch (this.fullscreenEnable) {
+        case true:
+          this.fullScreen();
+          break;
+
+        case false:
+          this.closeFullscreen();
+          break;
+      }
+    },
     setting: {
       handler(val) {
-        if (this.$store.state.Renderer) {
-          window.renderer = this.$store.state.Renderer;
-
-          if (this.setting.performace == "std") {
-            window.renderer.setPixelRatio(0.8);
-          } else if (this.setting.performace == "high") {
-            window.renderer.setPixelRatio(1.5);
-          }
+        if (this.$store.state.Renderer != {}) {
+          this.renderer = this.$store.state.Renderer;
+          window.renderer = this.renderer;
+          if (this.renderer.setPixelRatio instanceof Function)
+            if (this.setting.performace == "std") {
+              this.renderer.setPixelRatio(0.8);
+            } else if (this.setting.performace == "high") {
+              this.renderer.setPixelRatio(1.5);
+            }
         }
-        if (this.$store.state.Scene) {
-          window.sound = this.$store.state.Scene;
-
-          if (this.setting.sound == true) {
-            window.sound.play();
-          } else if (this.setting.sound == false) {
-            window.sound.pause();
-          }
+        if (this.$store.state.Scene != {}) {
+          this.sound = this.$store.state.Scene;
+          if (this.sound.play  instanceof Function)
+            if (this.setting.sound == true) {
+              this.sound.play();
+            } else if (this.setting.sound == false) {
+              this.sound.pause();
+            }
         }
       },
       deep: true,
@@ -138,6 +151,17 @@ export default {
   methods: {
     resetScreen() {
       window.location.reload();
+    },
+    closeFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.mozCancelFullScreen) {
+        document.mozCancelFullScreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        window.top.document.msExitFullscreen();
+      }
     },
     fullScreen() {
       let elem = document.getElementById("app");
@@ -170,13 +194,13 @@ export default {
   padding: 1vw;
   position: absolute;
   right: 3vw;
-  bottom: 10vh;
+  bottom: 5vh;
   transform: translate(0, -50%);
   z-index: 50;
   border-radius: 30px;
   @media screen and (min-width: 1024px) {
     left: 3vw;
-    right:auto;
+    right: auto;
     bottom: 10vh;
   }
 }
