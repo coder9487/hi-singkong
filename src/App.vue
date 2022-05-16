@@ -7,6 +7,7 @@
       <div class="icon"></div>
       <q-card class="setting-card" v-show="show">
         <q-card-section>
+          
           <div v-if="1">
             體驗效能
             <q-radio
@@ -21,6 +22,7 @@
               val="high"
               label="高"
             />
+            <q-img class="setting-card-close" src="icons/close.png" />
           </div>
 
           <div v-if="1">
@@ -39,6 +41,7 @@
               label="重整頁面"
               @click.stop="resetScreen"
             />
+            
           </div>
         </q-card-section>
       </q-card>
@@ -129,7 +132,7 @@ export default {
         }
         if (this.$store.state.Scene != {}) {
           this.sound = this.$store.state.Scene;
-          if (this.sound.play  instanceof Function)
+          if (this.sound.play instanceof Function)
             if (this.setting.sound == true) {
               this.sound.play();
             } else if (this.setting.sound == false) {
@@ -203,6 +206,16 @@ export default {
     right: auto;
     bottom: 10vh;
   }
+  &-close{
+    width: 3vw;
+    left:1vw;
+    // top: 6vh;
+    // right: 1vw;
+    // position: absolute;
+    @media screen and (min-width: 1024px) {
+
+    }
+  }
 }
 .icon {
   position: absolute;
@@ -246,6 +259,8 @@ export default {
     }
   }
 }
+
+
 </style>
 <style>
 body {
