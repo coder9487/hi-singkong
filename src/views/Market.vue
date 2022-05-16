@@ -72,6 +72,7 @@ export default defineComponent({
     };
   },
   mounted() {
+   
     this.market3dObject = document.getElementById("");
     let vid = document.getElementById("loading-video");
     // let photo = document.getElementById("loadingPage-mask");
@@ -108,7 +109,7 @@ export default defineComponent({
       // console.log("loading progress ", this.loading);
       let loadingWave = document.getElementById("loading-video");
       if (this.IS_MOBILE)
-        loadingWave.style.bottom = this.loading * 0.3 + "%";
+        loadingWave.style.bottom = this.loading  * 0.1 +10+ "%";
       else loadingWave.style.bottom = this.loading * 0.4 + "%";
       if (
         this.loading >= 98 &&
@@ -269,7 +270,8 @@ export default defineComponent({
   height: 100vh;
 }
 #colorSlide {
-  background-color: black;
+   background-color: white;
+   
 }
 // @media screen and (orientation: portrait) {
 //   .loadingPage {

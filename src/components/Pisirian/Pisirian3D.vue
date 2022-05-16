@@ -34,6 +34,7 @@ export default {
   },
   mounted() {
     this.Init_Three();
+     this.$store.commit("SetRenderer",[this.renderer,this.sound]);
     this.AddEnentListener();
     this.Animation_Three();
   },
@@ -87,8 +88,8 @@ export default {
     },
 
     loading_callbacks(val) {
-      // console.log("Pass into callbacks ", (val.loaded / 65211482).toFixed(2));
-      this.$emit("loadingProgress", (val.loaded / 65211482).toFixed(2));
+      //  console.log("Pass into callbacks ", (val.loaded ).toFixed(2));
+      this.$emit("loadingProgress", (val.loaded / 63805233).toFixed(2));
     },
     Init_Three() {
       this.raycaster = new THREE.Raycaster();
@@ -275,15 +276,15 @@ export default {
       this.camera.add(listener);
 
       // create a global audio source
-      const sound = new THREE.Audio(listener);
+      this. sound = new THREE.Audio(listener);
 
       // load a sound and set it as the Audio object's buffer
       const audioLoader = new THREE.AudioLoader();
-      audioLoader.load("sound/sea_wave.mp3", function (buffer) {
-        sound.setBuffer(buffer);
-        sound.setLoop(true);
-        sound.setVolume(1);
-        sound.play();
+      audioLoader.load("sound/sea_wave.mp3",  (buffer) =>{
+       this. sound.setBuffer(buffer);
+        this.sound.setLoop(true);
+        this.sound.setVolume(1);
+        this.sound.play();
       });
     },
     createSea() {

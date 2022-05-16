@@ -8,8 +8,10 @@ const Market = {
     tutorialIndex: 0,
     distoryScene:false,
     Fozzy3D: false,
+    
   }),
   mutations: {
+
     ResetTutorialDialog(state){
       state.tutorialIndex = 0
     },
@@ -131,8 +133,16 @@ export default createStore({
     Forward: false,
     gameStart: false,
     CameraDirect: { x: 0, y: 0 },
+    Renderer:{},
+    Scene:{}
   },
   mutations: {
+    SetRenderer(state,renderer)
+    {
+      state.Renderer = renderer[0];
+      state.Scene = renderer[1];
+    },
+
     gameStart(state) {
       state.gameStart = true;
     },

@@ -21,7 +21,7 @@
         :id="`shortcut-list-photo-${i + 1}`"
         class="shortcut-list-photo"
         :src="`images/start/1-${i + 1}.png`"
-        @click="this.$router.push(routerLink.desktop[i - 1])"
+        @click="fullScreen();this.$router.push(routerLink.desktop[i - 1])"
       />
     </div>
 
@@ -40,7 +40,7 @@
           :id="`mobile-list-photo-${i}`"
           class="mobile-list-photo"
           :src="`images/start/mobile/1-${i}.png`"
-          @click="this.$router.push(routerLink.mobile[i - 1])"
+          @click="fullScreen();this.$router.push(routerLink.mobile[i - 1])"
         />
       </p>
       <p>
@@ -50,7 +50,7 @@
           :id="`mobile-list-photo-${i + 3}`"
           class="mobile-list-photo"
           :src="`images/start/mobile/1-${i + 3}.png`"
-          @click="this.$router.push(routerLink.mobile[i + 2])"
+          @click="fullScreen();this.$router.push(routerLink.mobile[i + 2])"
         />
       </p>
     </div>

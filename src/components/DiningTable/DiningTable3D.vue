@@ -6,11 +6,10 @@
 <script>
 import * as THREE from "three";
 import { Sea } from "../../Library/Sea";
-import { GlobalScene,  } from "../../Library/BasicLibrary";
+import { GlobalScene } from "../../Library/BasicLibrary";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { marketSetting,  } from "../../Library/LoadObject";
+import { marketSetting } from "../../Library/LoadObject";
 import { FirstPersonCameraControl } from "../../Library/FirstPersonCameraControls";
-
 
 export default {
   setup() {
@@ -24,6 +23,7 @@ export default {
   },
   mounted() {
     this.Init_Three();
+     this.$store.commit("SetRenderer",[this.renderer,this.sound]);
     this.AddEnentListener();
     this.Animation_Three();
     console.log(
@@ -50,7 +50,7 @@ export default {
   methods: {
     loading_callbacks(val) {
       // console.log("Pass into callbacks ", (val.loaded / 90009244).toFixed(2));
-      this.$emit("loadingProgress", (val.loaded / 90009244).toFixed(2));
+      this.$emit("loadingProgress", (val.loaded / 20495104).toFixed(2));
     },
     AddEnentListener() {
       this.Window = window;
@@ -123,11 +123,11 @@ export default {
       //     "images/sky_neg_z.jpg",
       //     "images/sky_pos_z.jpg",
       //   ]);
-         this.scene.background =   new THREE.Color( 0x3CC4D0 );
+      this.scene.background = new THREE.Color(0x3cc4d0);
 
       // load a resource
       this.loadTable();
-
+      this.createSound();
       this.createSea();
 
       // this.pin = this.createPointer();w
@@ -165,6 +165,22 @@ export default {
       this.LoadMarketFinish = true;
 
       console.log(this.tableModel);
+    },
+    createSound() {
+      const listener = new THREE.AudioListener();
+      this.camera.add(listener);
+
+      // create a global audio source
+      this.sound = new THREE.Audio(listener);
+
+      // load a sound and set it as the Audio object's buffer
+      const audioLoader = new THREE.AudioLoader();
+      audioLoader.load("sound/sea_wave.mp3", (buffer) => {
+        this.sound.setBuffer(buffer);
+        this.sound.setLoop(true);
+        this.sound.setVolume(1);
+        this.sound.play();
+      });
     },
     createSea() {
       let seaVertices = 100;
@@ -221,7 +237,6 @@ export default {
       console.log(this.akonList);
 
       console.log("Raycaster list ", this.raycasterObjectList);
-
     },
     updateAnimation() {
       if (this.RotationObject != null)
@@ -271,18 +286,17 @@ export default {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     },
     onClick() {
-
-      if(this.castAkon)
-      {
-         this.$store.commit("DiningTable/toggleAkon",true);
-         console.log("akon enable",this.$store.state.DiningTable.akonEnable)
-      }
-      else if (this.RotationObject != undefined)
-      if (this.RotationObject.name != undefined)
-      {
-        this.$store.commit("DiningTable/SelectDish", this.RotationObject.name);
-        console.log("Result", this.$store.state.DiningTable.dish);
-      }
+      if (this.castAkon) {
+        this.$store.commit("DiningTable/toggleAkon", true);
+        console.log("akon enable", this.$store.state.DiningTable.akonEnable);
+      } else if (this.RotationObject != undefined)
+        if (this.RotationObject.name != undefined) {
+          this.$store.commit(
+            "DiningTable/SelectDish",
+            this.RotationObject.name
+          );
+          console.log("Result", this.$store.state.DiningTable.dish);
+        }
     },
   },
 };
