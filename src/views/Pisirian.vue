@@ -104,8 +104,8 @@ export default defineComponent({
       // console.log("loading progress ", this.loading);
       let loadingWave = document.getElementById("loading-video");
       if (this.IS_MOBILE)
-        loadingWave.style.bottom = this.loading  * 0.2 +10+ "%";
-      else loadingWave.style.bottom = this.loading * 0.3 +10 + "%";
+        loadingWave.style.bottom = this.loading  * 0.1 +10+ "%";
+      else loadingWave.style.bottom = this.loading * 0.1+ 30 + "%";
       if (
         this.loading >= 98 &&
         ((this.ENABLE_FOR_MOBILE && this.IS_MOBILE) || !this.IS_MOBILE) &&
