@@ -77,9 +77,9 @@ export default {
       this.direc.hori = newInfo.delta.x.toFixed(0);
       this.direc.vert = newInfo.delta.y.toFixed(0);
       this.direc.hori =
-        Math.min(Math.max(parseInt(this.direc.hori), -5), 5) * 3;
+        Math.min(Math.max(parseInt(this.direc.hori), -5), 5) * 10;
       this.direc.vert =
-        Math.min(Math.max(parseInt(this.direc.vert), -5), 5) * 3;
+        Math.min(Math.max(parseInt(this.direc.vert), -5), 5) * 5;
       // console.log(this.direc);
       if (newInfo.isFinal) {
         this.direc.hori = 0;

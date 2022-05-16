@@ -33,6 +33,7 @@ export default {
   },
   mounted() {
     this.Init_Three();
+    this.$store.commit("SetRenderer", [this.renderer, this.sound]);
     this.AddEnentListener();
 
     this.Animation_Three();
@@ -58,7 +59,8 @@ export default {
   },
   watch: {
     distoryScene: function () {
-      console.log(this.scene);
+      this.sound.stop();
+      Object.assign(this.$data, this.$options.data());
       while (this.scene.children.length > 0) {
         if (this.scene.children[0].type == "Group") {
           this.scene.children[0].traverse(function (obj) {
@@ -70,7 +72,7 @@ export default {
         }
         this.scene.remove(this.scene.children[0]);
       }
-      this.renderer.dispose()
+      this.renderer.dispose();
       this.RemoveEventListener();
     },
     direc: {
@@ -104,7 +106,7 @@ export default {
     },
   },
   methods: {
-    resetDire(){
+    resetDire() {
       this.$store.commit("setLookDir", {
         x: 0,
         y: 0,
@@ -128,7 +130,7 @@ export default {
       this.direc.hori = newInfo.delta.x.toFixed(0);
       this.direc.vert = newInfo.delta.y.toFixed(0);
       this.direc.hori =
-        Math.min(Math.max(parseInt(this.direc.hori), -5), 5) * 5;
+        Math.min(Math.max(parseInt(this.direc.hori), -5), 5) * 10;
       this.direc.vert =
         Math.min(Math.max(parseInt(this.direc.vert), -5), 5) * 5;
       // console.log(this.direc);
@@ -217,7 +219,7 @@ export default {
       // load a resource
       this.loadMarket();
       this.createSea();
-
+      this.createSound();
       this.pin = this.createPointer();
     },
     Animation_Three() {
@@ -262,7 +264,22 @@ export default {
       this.controls.colliders = this.marketModel;
       this.LoadMarketFinish = true;
     },
+    createSound() {
+      const listener = new THREE.AudioListener();
+      this.camera.add(listener);
 
+      // create a global audio source
+      this.sound = new THREE.Audio(listener);
+
+      // load a sound and set it as the Audio object's buffer
+      const audioLoader = new THREE.AudioLoader();
+      audioLoader.load("sound/market_bgm.mp3", (buffer) => {
+        this.sound.setBuffer(buffer);
+        this.sound.setLoop(true);
+        this.sound.setVolume(1);
+        this.sound.play();
+      });
+    },
     createSea() {
       let seaVertices = 20;
       let seaAmp = 0.8;
@@ -285,7 +302,6 @@ export default {
     onPointerMove(event) {
       this.pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
       this.pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-      console.log(this.pointer);
     },
     onWindowResize() {
       this.camera.aspect = window.innerWidth / window.innerHeight;
