@@ -9,6 +9,7 @@
       id="shortcut-list-tag"
       @click.stop="toggleList"
     />
+    
     <div
       v-show="hideFlag"
       class="shortcut-list"
