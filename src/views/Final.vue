@@ -1,5 +1,4 @@
 <template>
-  <img src="../../public/images/final/next_page.png" class="button" @click="this.$router.push('/Member')">
   <div class="mainPage" id="page1">
     <img class="background-photo" src="../../public/images/final/market.jpeg" />
     <div class="infoArea">

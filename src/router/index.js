@@ -49,9 +49,11 @@ const router = createRouter({
   routes,
 });
 
-router.afterEach(function (to, from, next) {
+router.afterEach( (to, from, next)=> {
   // window.location.reload();
-  console.log(to)
+  let sound = this.$store.state.Scene
+  sound.stop()
+
   return true;
 });
 

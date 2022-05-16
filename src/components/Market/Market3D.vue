@@ -32,6 +32,7 @@ export default {
   },
   mounted() {
     this.Init_Three();
+     this.$store.commit("SetRenderer",[this.renderer,this.sound]);
     this.AddEventListener();
     this.Animation_Three();
   },
@@ -48,7 +49,7 @@ export default {
   },
   watch: {
     distoryScene: function () {
-      
+      this.sound.stop()
       Object.assign(this.$data, this.$options.data())
       while (this.scene.children.length > 0) {
         if (this.scene.children[0].type == "Group") {
@@ -274,15 +275,15 @@ export default {
       this.camera.add(listener);
 
       // create a global audio source
-      const sound = new THREE.Audio(listener);
+      this. sound = new THREE.Audio(listener);
 
       // load a sound and set it as the Audio object's buffer
       const audioLoader = new THREE.AudioLoader();
-      audioLoader.load("sound/market_bgm.mp3", function (buffer) {
-        sound.setBuffer(buffer);
-        sound.setLoop(true);
-        sound.setVolume(1);
-        sound.play();
+      audioLoader.load("sound/market_bgm.mp3",  (buffer) =>{
+       this. sound.setBuffer(buffer);
+        this.sound.setLoop(true);
+        this.sound.setVolume(1);
+        this.sound.play();
       });
     },
 
@@ -712,18 +713,7 @@ export default {
             this.camera.position.z
           );
           this.cube.lookAt(-9.492, 1.5, -3.408);
-          let startOrientation = new THREE.Quaternion();
-
-          startOrientation = this.cube.quaternion.clone();
           this.gsapTimeline
-            .to(this.camera.quaternion, {
-              duration: 2,
-
-              x: startOrientation.x,
-              y: -startOrientation.y,
-              z: startOrientation.z,
-              w: startOrientation.w,
-            })
             .to(this.camera.position, {
               duration: 1,
               repeat: 0,
