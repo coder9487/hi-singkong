@@ -119,7 +119,7 @@ export default {
       }
     },
     setting: {
-      handler(val) {
+      handler() {
         if (this.$store.state.Renderer != {}) {
           this.renderer = this.$store.state.Renderer;
           window.renderer = this.renderer;
