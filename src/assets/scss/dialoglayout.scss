@@ -1,0 +1,279 @@
+$content-text-size-pc: 1.4vw;
+
+.PasserbydialogArea {
+
+  opacity: 1;
+  position: absolute;
+  width: 50vw;
+  left: 25vw;
+  /*height: 20vh;*/
+  height: 5vw;
+  /*left: 20vw;*/
+  bottom: 20vh;
+
+  & * {
+    pointer-events: all;
+  }
+
+  &-photo {
+    position: relative;
+    width: 45vw;
+    left: 7.5vw;
+    top: -3%;
+  }
+
+  &-dialog {
+
+    position: relative;
+    width: 50vw;
+    /*height: 20vh;*/
+    height: 10vw;
+
+    background-color: aliceblue;
+    border-radius: 15px;
+    padding: 2.5vw;
+    font-size: 1.5vw;
+    color: #276a70;
+
+    @media screen and (min-width: 1024px) {
+      font-size: $content-text-size-pc;
+      line-height: $content-text-size-pc * 1.8;
+      letter-spacing: $content-text-size-pc * 0.2;
+      border-radius: 30px;
+    }
+
+    ::v-deep b {
+      color: #fea30b;
+      font-weight: bolder;
+    }
+  }
+
+  &-group {
+    position: relative;
+    height: 10vh;
+    // transform: translateX(2.5vw);
+    top: -3vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+b {
+  color: #fea30b;
+  font-weight: bolder;
+}
+
+.button {
+  
+  cursor: pointer;
+  z-index: 11;
+  width: 13vw;
+  height: 10vh;
+
+  border-radius: 15px;
+  padding: 2%;
+
+  @media screen and (min-width: 1024px) {
+    width: 9vw;
+    height: 7vh;
+
+    border-radius: 20px;
+  }
+
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  font-size: larger;
+  color: white;
+  font-weight: bolder;
+}
+
+.color {
+  &-orange {
+    background-color: #fea30b;
+
+    &:hover {
+      background-color: #ff7a00;
+    }
+  }
+
+  &-cyan {
+    background-color: #1ab5c1;
+
+    &:hover {
+      background-color: #0098a4;
+    }
+  }
+}
+
+.mission {
+  position: fixed;
+  top: 2vh;
+  width: 20vw;
+  height: 9vh;
+  border-radius: 30px;
+  left: 40vw;
+
+  // transform: translateX(-50%);
+
+    border-radius: 30px;
+    animation-name: pulse;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+  
+
+
+
+
+
+
+  @media screen and (min-width: 1024px) {
+    width: 15vw;
+    left: 42.5vw;
+    height: 5vh;
+    border-radius: 30px;
+  }
+
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bolder;
+  font-size: large;
+  background-color: #fea30b;
+}
+$light-color:#ffedac;
+@keyframes pulse {
+  0% {
+    -moz-box-shadow: 0 0 0 0 $light-color;
+    box-shadow: 0 0 0 0 $light-color;
+    opacity: 1;
+  }
+
+  1% {
+    -moz-box-shadow: 0 0 0px 10px $light-color;
+    box-shadow: 0 0 0px 10px $light-color;
+    // opacity: 0.5;
+  }
+
+  50% {
+    // opacity: 0;
+    -moz-box-shadow: 0 0 0px 10px $light-color;
+    box-shadow: 0 0 0px 10px $light-color;
+  }
+
+  51% {
+    // opacity: 0;
+    -moz-box-shadow: 0 0 0px 0px $light-color;
+    box-shadow: 0 0 0px 0px $light-color;
+  }
+  90%{
+    -moz-box-shadow: 0 0 0px 0px$light-color;
+    box-shadow: 0 0 0px 0px $light-color;
+  }
+}
+
+@keyframes mission_ainimation {
+  0% {
+    // transform: scaleX(100%);
+    opacity: 1;
+  }
+
+  5% {
+    // // transform: scaleX(0%);
+  }
+
+  10% {
+    // transform: scaleX(100%);
+    
+  }
+
+  20% {
+    // transform: scaleX(100%);
+    opacity: 0;
+  }
+  40% {
+    // transform: scaleX(100%);
+    opacity: 1;
+  }
+
+  100% {
+    // transform: scaleX(100%);
+  }
+}
+
+
+.dialogArea {
+
+  position: fixed;
+  width: 60vw;
+  height: 60vh;
+  left: 15vw;
+  bottom: 20vh;
+
+  & * {
+    pointer-events: all;
+  }
+
+  &-photo {
+    position: relative;
+    width: 45vw;
+    left: 9.5vw;
+    top: -3%;
+  }
+
+  &-dialog {
+    position: relative;
+    width: 45vw;
+    height: 10vw;
+    left: 9.5vw;
+    background-color: aliceblue;
+    border-radius: 30px;
+    padding: 2.2vw;
+    font-size: 1.5vw;
+    color: #276a70;
+
+    @media screen and (min-width: 1024px) {
+      font-size: $content-text-size-pc;
+      line-height: $content-text-size-pc * 1.8;
+      letter-spacing: $content-text-size-pc * 0.2;
+    }
+
+    &>b {
+      color: #fea30b;
+      font-weight: bolder;
+    }
+  }
+
+  &-group {
+    position: relative;
+    width: 45vw;
+    height: 10vh;
+
+    left: 9.5vw;
+    top: -5%;
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+#goBtn {
+  z-index: 100;
+  left: 5vh;
+  bottom: 5vh;
+  width: 100px;
+  height: 100px;
+  position: fixed;
+  border-radius: 20px;
+  transition: border-radius 0.3s;
+
+  &:active {
+    border-radius: 50px;
+    transition: border-radius 0.3s;
+  }
+}
