@@ -22,7 +22,7 @@
               val="high"
               label="高"
             />
-            <q-img class="setting-card-close" src="icons/close.png"     @click.stop="show = !show"/>
+            <q-img class="setting-card-close" src="icons/close.png"  @click.stop="show = !show"/>
           </div>
 
           <div v-if="1">
