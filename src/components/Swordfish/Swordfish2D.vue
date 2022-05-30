@@ -273,7 +273,7 @@ export default {
         }, 2000);
       }
       if (this.dialogContent_Index == 9) {
-        if (this.getMountofSwordfish == 0) {
+        if (1) {
           this.dialogContent_Index = 10;
         }
       }

@@ -788,7 +788,7 @@ export default {
       }
       for (let i = 0; i < 3; i++) {
         this.boat[i].position.y =
-          Math.sin((performance.now() + i * 1000) * 0.001) * 0.1 + 0.33;
+          Math.sin((performance.now() + i * 1000) * 0.001) * 0.1 + 0.22;
       }
 
       this.mixer.update(0.016);

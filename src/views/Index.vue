@@ -5,7 +5,7 @@
       v-show="hideFlag"
       v-if="!IS_MOBILE"
       src="images/start/1-1.png"
-      class="shortcut-list-tag shortcut-list-tag-animation"
+      class="shortcut-list-tag"
       id="shortcut-list-tag"
       @click.stop="toggleList"
     />
