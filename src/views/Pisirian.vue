@@ -1,19 +1,29 @@
 <template>
   <div class="loadingPage" v-if="!showingFlag">
     <img class="loadingPage-mask" id="loadingPage-mask" />
+
     <div class="loadingPage-text">
       <div
         class="loadingPage-text-content"
         v-if="(ENABLE_FOR_MOBILE && IS_MOBILE) || !IS_MOBILE"
       >
-        {{ loading_text[loading_text_index] }}
+        <div>{{ loading_text[loading_text_index] }}</div>
       </div>
+
       <div v-else class="loadingPage-text-dev">
         手機版尚未完成系統測試，請使用電腦版以獲得最佳體驗
         <div>
           Mobile and VR version are not supported now, please try Hi！ Chenggong
           on desktop.
         </div>
+      </div>
+    </div>
+
+    <div class="loadingPage-text-1">
+      <div class="loadingPage-text-content">
+        <p>
+          <b>{{ this.loading}}%</b>
+        </p>
       </div>
     </div>
     <div class="loadingPage-loading-video" id="loading-video">

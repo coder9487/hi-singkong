@@ -1,8 +1,8 @@
-
 .loadingPage {
   width: 100vw;
   height: 100vh;
-    background-color: white;
+  background-color: white;
+
   &-mask {
     //  opacity: 0.3;
     position: fixed;
@@ -11,6 +11,7 @@
     height: auto;
     top: -5vh;
   }
+
   &-text {
     left: 50vw;
     transform: translateX(-50%);
@@ -24,20 +25,56 @@
     font-size: 10px;
     color: #174275;
     margin: 0 auto;
+
     @media screen and (min-device-width: 1024px) {
       bottom: 30%;
       font-size: 20px;
     }
+
     &-content {
       display: flex;
       align-content: center;
       align-items: center;
       justify-content: center;
     }
+
     &-dev {
       transform: translateX(-10%);
     }
   }
+
+  &-text-1 {
+    left: 50vw;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 20;
+    position: fixed;
+    text-align: center;
+    bottom: 15%;
+    font-size: 10px;
+    color: #174275;
+   margin-top: 5vh;
+
+    @media screen and (min-device-width: 1024px) {
+      bottom: 20%;
+      font-size: 2.5vw;
+    }
+
+    &-content {
+      
+      display: flex;
+      align-content: center;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-dev {
+      transform: translateX(-10%);
+    }
+  }
+
   &-percentage {
     z-index: 20;
     position: fixed;
@@ -45,29 +82,35 @@
     color: darkorange;
     bottom: 10%;
     left: 40%;
+
     @media screen and (min-device-width: 1024px) {
       bottom: 10%;
       left: 40%;
     }
   }
+
   &-loading-video {
     opacity: 0;
     position: absolute;
     // left: 15%;
     bottom: -70%;
-    left:35%;
+    left: 35%;
+
     @media screen and (min-device-width: 1024px) {
       left: 30%;
       bottom: -50vh;
     }
+
     z-index: 8;
-    & > video {
+
+    &>video {
       width: 40vw;
-      @media screen and (min-device-width: 1024px) {
-      }
+
+      @media screen and (min-device-width: 1024px) {}
     }
   }
 }
+
 #Market3D-tag {
   position: fixed;
   // background-color: #35909c;
@@ -81,14 +124,17 @@
   width: 100vw;
   height: 100vh;
 }
+
 #colorSlide {
   background-color: white;
 }
+
 @media screen and (orientation: portrait) {
   .loadingPage {
     &-loading-video {
       top: 20vh;
     }
+
     &-mask {
       top: 20vh;
       height: 100vh;

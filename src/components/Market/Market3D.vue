@@ -131,8 +131,8 @@ export default {
     },
 
     loading_callbacks(val) {
-      console.log("Pass into callbacks ", (val.loaded / 98073222).toFixed(2));
-      this.$emit("loadingProgress", (val.loaded / 98073222).toFixed(2));
+      console.log("Pass into callbacks ", (val.loaded / 84342970).toFixed(2));
+      this.$emit("loadingProgress", (val.loaded / 84342970).toFixed(2));
     },
     Init_Three() {
       this.pin2d = document.getElementById("pin");

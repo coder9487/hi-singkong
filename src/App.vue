@@ -2,12 +2,14 @@
   <q-layout>
     <q-page-container>
       <router-view id="router-view" />
+      <div id="mobile_rotate">
+        <img src="../public/images/mobile_rotate_background.png" />
+        <img id="mobile_rotate_content" src="../public/images/mobile_rotate.png" />
+      </div>
 
-      <img id="mobile_rotate" src="../public/images/mobile_rotate.png" />
       <div class="icon"></div>
       <q-card class="setting-card" v-show="show">
         <q-card-section>
-          
           <div v-if="1">
             體驗效能
             <q-radio
@@ -22,7 +24,11 @@
               val="high"
               label="高"
             />
-            <q-img class="setting-card-close" src="icons/close.png"  @click.stop="show = !show"/>
+            <q-img
+              class="setting-card-close"
+              src="icons/close.png"
+              @click.stop="show = !show"
+            />
           </div>
 
           <div v-if="1">
@@ -41,7 +47,6 @@
               label="重整頁面"
               @click.stop="resetScreen"
             />
-            
           </div>
         </q-card-section>
       </q-card>
@@ -192,6 +197,16 @@ export default {
   width: 100vw;
   position: absolute;
   z-index: -5;
+  top: 0;
+  &_content{
+    top: 0;
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    margin: 100% 50%;
+
+  }
 }
 .setting-card {
   padding: 1vw;
@@ -206,14 +221,13 @@ export default {
     right: auto;
     bottom: 10vh;
   }
-  &-close{
+  &-close {
     width: 3vw;
-    left:1vw;
+    left: 1vw;
     // top: 6vh;
     // right: 1vw;
     // position: absolute;
     @media screen and (min-width: 1024px) {
-
     }
   }
 }
@@ -259,8 +273,6 @@ export default {
     }
   }
 }
-
-
 </style>
 <style>
 body {

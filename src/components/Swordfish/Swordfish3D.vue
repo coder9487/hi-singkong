@@ -78,8 +78,8 @@ export default {
     },
 
     loading_callbacks(val) {
-      // // console.log("Pass into callbacks ", (val.loaded / 3246875).toFixed(2));
-      this.$emit("loadingProgress", (val.loaded / 3246875).toFixed(2));
+       console.log("Pass into callbacks ", (val.loaded / 5629249).toFixed(2));
+      this.$emit("loadingProgress", (val.loaded / 5629249).toFixed(2));
     },
     createSound() {
       const listener = new THREE.AudioListener();
