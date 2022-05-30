@@ -3,8 +3,14 @@
     <q-page-container>
       <router-view id="router-view" />
       <div id="mobile_rotate">
-        <img src="../public/images/mobile_rotate_background.png" />
-        <img id="mobile_rotate_content" src="../public/images/mobile_rotate.png" />
+        <img
+          id="mobile_rotate_photo"
+          src="../public/images/mobile_rotate_background.png"
+        />
+        <img
+          id="mobile_rotate_content"
+          src="../public/images/mobile_rotate.png"
+        />
       </div>
 
       <div class="icon"></div>
@@ -193,19 +199,22 @@ export default {
 </script>
 <style lang="scss" scoped>
 #mobile_rotate {
-  height: auto;
-  width: 100vw;
   position: absolute;
   z-index: -5;
   top: 0;
-  &_content{
+  &_content {
+    top: 0;
+    position: absolute;
+    height: 80vh;
+    width: 80vw;
+    display: flex;
+    margin: 10vh 10vw;
+  }
+  &_photo {
     top: 0;
     position: absolute;
     height: 100vh;
     width: 100vw;
-    display: flex;
-    margin: 100% 50%;
-
   }
 }
 .setting-card {
